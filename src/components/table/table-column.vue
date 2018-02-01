@@ -1,0 +1,57 @@
+<style></style>
+<template>
+    <div></div>
+</template>
+<script>
+    export default {
+        props:{
+            prop:{
+                type:String,
+                default:""
+            },
+            label:{
+                type:String,
+                default:""
+            },
+            width:{
+                type:String,
+                default:"100px"
+            },
+            align:{
+                type:String,
+                default:"center"
+            },
+            fixed:{
+                type:String,
+                default:""
+            },
+            formatter:{
+                type:Function,
+                default:null
+            },
+            checkbox:{
+                type:Boolean,
+                default:false
+            },
+            filterCheckbox:{
+                type:Function,
+                default:null
+            }
+        },
+        created:function(){
+            if(this.$parent && this.$parent.columnList){
+                this.$parent.columnList.push({
+                    prop:this._props.prop,
+                    label:this._props.label,
+                    width:this._props.width,
+                    align:this._props.align,
+                    fixed:this._props.fixed,
+                    formatter:this._props.formatter,
+                    checkbox:this._props.checkbox,
+                    filterCheckbox:this._props.filterCheckbox
+                });
+            }
+        },
+        name:"mj-table-column"
+    }
+</script>

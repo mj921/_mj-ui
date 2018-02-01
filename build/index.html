@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title></title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app">
+        <mj-row>
+            <mj-col :span="6" align="center">
+                <mj-button>啊啊啊</mj-button>
+            </mj-col>
+            <mj-col :span="6" align="center">
+                <mj-input placeholder="asdad"></mj-input>
+            </mj-col>
+            <mj-col :span="6" align="center">
+                <mj-textarea placeholder="asdad" v-model="textarea"></mj-textarea>
+            </mj-col>
+            <mj-col :span="6" align="center">
+                <mj-select v-model="select">
+                    <mj-select-item value="ada" label="dad" data-pp="adad"></mj-select-item>
+                    <mj-select-item value="adafasfa" label="afasf" data-pp="adafasfaad" :filter-flag="true"></mj-select-item>
+                </mj-select>
+            </mj-col>
+        </mj-row>
+        <mj-table :data="tableData" :load-num="0">
+            <mj-table-column prop="a" label="啊啊"></mj-table-column>
+            <mj-table-column prop="b" label="不不不" :formatter="function(row,val){return '99999'}"></mj-table-column>
+        </mj-table>
+        <mj-page :page-curr="2" :pages="10"></mj-page>
+    </div>
+    <script src="vue.js"></script>
+    <script src="bundle.js"></script>
+    <script>
+        var app = new Vue({
+            el:"#app",
+            data:{
+                textarea:"asdadasd",
+                select:"ada",
+                tableData:[
+                    {
+                        a:1,
+                        b:"bbb"
+                    }
+                ]
+            }
+        });
+    </script>
+</body>
+</html>

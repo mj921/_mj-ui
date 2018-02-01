@@ -1,6 +1,6 @@
 <style></style>
 <template>
-    <div :class="'mj-page mj-text-' + align">
+    <div :class="'mj-page mj-text-' + align" v-show="total > 0">
         <div class="mj-page-main">
             <div class="mj-page-total" v-if="total > 0">共{{total}}条</div>
             <div class="mj-page-btn mj-page-prev" @click="prevFun">&lt;&lt;</div>

@@ -308,22 +308,22 @@ if(top != this){
 //     }
 // })
 //表格列
-Vue.component("mj-table-column",{
-    render:function(createElement){
-        return createElement("div")
-    },
-    props:{
-        prop:String,//列参数名
-        label:String,//列名称
-        width:String,//列宽度
-        "min-width":String,
-        align:String,//列对齐方式
-        fixed:String,//列浮动
-        formatter:Function,//列数据格式化方法
-        checkbox:Boolean,//列是否是选择框
-        "filter-checkbox":Function//选择框是否可选择过滤方法
-    },
-})
+// Vue.component("mj-table-column",{
+//     render:function(createElement){
+//         return createElement("div")
+//     },
+//     props:{
+//         prop:String,//列参数名
+//         label:String,//列名称
+//         width:String,//列宽度
+//         "min-width":String,
+//         align:String,//列对齐方式
+//         fixed:String,//列浮动
+//         formatter:Function,//列数据格式化方法
+//         checkbox:Boolean,//列是否是选择框
+//         "filter-checkbox":Function//选择框是否可选择过滤方法
+//     },
+// })
 //按钮
 // Vue.component("mj-button",{
 //     render:function(createElement){

@@ -25,11 +25,61 @@
                 </mj-select>
             </mj-col>
         </mj-row>
-        <mj-table :data="tableData" :load-num="0">
+        <mj-table :data="tableData" :load-num="0" ref="tttt">
+            <mj-table-column :checkbox="true" :filter-checkbox="function(){return true;}"></mj-table-column>
             <mj-table-column prop="a" label="啊啊"></mj-table-column>
             <mj-table-column prop="b" label="不不不" :formatter="function(row,val){return '99999'}"></mj-table-column>
+            <mj-table-column prop="a" label="啊啊"></mj-table-column>
+            <mj-table-column prop="b" label="不不不" :formatter="function(row,val){return '99999'}"></mj-table-column>
+            <mj-table-column prop="a" label="啊啊"></mj-table-column>
+            <mj-table-column prop="b" label="不不不" :formatter="function(row,val){return '99999'}"></mj-table-column>
+            <mj-table-column prop="a" label="啊啊"></mj-table-column>
+            <mj-table-column prop="b" label="不不不" :formatter="function(row,val){return '99999'}"></mj-table-column>
+            <mj-table-column prop="a" label="啊啊"></mj-table-column>
+            <mj-table-column prop="b" label="不不不" :formatter="function(row,val){return '99999'}"></mj-table-column>
+            <mj-table-column prop="a" label="啊啊"></mj-table-column>
+            <mj-table-column prop="b" label="不不不" :formatter="function(row,val){return '99999'}"></mj-table-column>
+            <mj-table-column prop="a" label="啊啊"></mj-table-column>
+            <mj-table-column prop="b" label="不不不" :formatter="function(row,val){return '99999'}"></mj-table-column>
+            <mj-table-column prop="a" label="啊啊"></mj-table-column>
+            <mj-table-column prop="b" label="不不不" :formatter="function(row,val){return '99999'}"></mj-table-column>
+            <mj-table-column prop="a" label="啊啊"></mj-table-column>
+            <mj-table-column prop="b" label="不不不" :formatter="function(row,val){return '99999'}"></mj-table-column>
+            <mj-table-column prop="a" label="啊啊"></mj-table-column>
+            <mj-table-column prop="b" label="不不不" :formatter="function(row,val){return '99999'}"></mj-table-column>
+            <mj-table-column prop="a" label="啊啊"></mj-table-column>
+            <mj-table-column prop="b" label="不不不" :formatter="function(row,val){return '99999'}"></mj-table-column>
+            <mj-table-column prop="a" label="啊啊"></mj-table-column>
+            <mj-table-column prop="b" label="不不不" :formatter="function(row,val){return '99999'}"></mj-table-column>
+            <mj-table-column prop="b" label="不不不" :formatter="function(row,val){return '99999'}"></mj-table-column>
+            <mj-table-column prop="a" label="啊啊"></mj-table-column>
+            <mj-table-column prop="b" label="不不不" :formatter="function(row,val){return '99999'}"></mj-table-column>
+            <mj-table-column prop="a" label="啊啊"></mj-table-column>
+            <mj-table-column prop="b" label="不不不" :formatter="function(row,val){return '99999'}"></mj-table-column>
+            <mj-table-column prop="a" label="啊啊"></mj-table-column>
+            <mj-table-column prop="b" label="不不不" :formatter="function(row,val){return '99999'}"></mj-table-column>
+            <mj-table-column prop="a" label="啊啊"></mj-table-column>
+            <mj-table-column prop="b" label="不不不" :formatter="function(row,val){return '99999'}"></mj-table-column>
+            <mj-table-column prop="b" label="不不不" :formatter="function(row,val){return '99999'}"></mj-table-column>
+            <mj-table-column prop="a" label="啊啊"></mj-table-column>
+            <mj-table-column prop="b" label="不不不" :formatter="function(row,val){return '99999'}"></mj-table-column>
+            <mj-table-column prop="a" label="啊啊"></mj-table-column>
+            <mj-table-column prop="b" label="不不不" :formatter="function(row,val){return '99999'}"></mj-table-column>
+            <mj-table-column prop="a" label="啊啊"></mj-table-column>
+            <mj-table-column prop="b" label="不不不" :formatter="function(row,val){return '99999'}"></mj-table-column>
+            <mj-table-column prop="a" label="啊啊"></mj-table-column>
+            <mj-table-column prop="b" label="不不不" :formatter="function(row,val){return '99999'}"></mj-table-column>
+            <mj-table-column prop="a" label="啊啊"></mj-table-column>
+            <mj-table-column prop="b" label="不不不" :formatter="function(row,val){return '99999'}"></mj-table-column>
+            <mj-table-column prop="c" label="啊啊" fixed="right"></mj-table-column>
         </mj-table>
         <mj-page :page-curr="2" :pages="10"></mj-page>
+        <mj-checkbox-group ref="aaa">
+            <mj-checkbox v-model="checkbox" label="阿发" checked-value="aaa" @change="checkboxChange"></mj-checkbox>
+            <div class="mj-checkbox">afafaf</div>
+        </mj-checkbox-group>
+        <mj-checkbox v-model="checkbox" label="阿发"></mj-checkbox>
+        <mj-button @click="ccccccc">click</mj-button>
     </div>
     <script src="vue.js"></script>
     <script src="bundle.js"></script>
@@ -42,10 +92,28 @@
                 tableData:[
                     {
                         a:1,
-                        b:"bbb"
+                        b:"bbb",
+                        c:"ccc"
+                    },{
+                        a:2,
+                        b:"bbb",
+                        c:"ccc"
+                    },{
+                        a:3,
+                        b:"bbb",
+                        c:"ccc"
                     }
-                ]
-            }
+                ],
+                checkbox:true
+            },
+            methods:{
+                checkboxChange:function(){
+                    console.log(this.$refs.aaa.checkedList,this.$refs.aaa)
+                },
+                ccccccc:function(){
+                    console.log(this.$refs.tttt);
+                }
+            },
         });
     </script>
 </body>

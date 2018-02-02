@@ -797,104 +797,104 @@ if(top != this){
 //         }
 //     }
 // })
-Vue.component("mj-checkbox-group",{
-    render:function(createElement){
-        return createElement("div",{"class":"mj-checkbox-group"},this.$slots.default)
-    },
-    data:function(){
-        return {
-            values:[]
-        }
-    },
-    methods:{
-        _addValue:function(value){
-            var flag = true;
-            for(var i = 0,len = this.values.length;i < len;i++){
-                if(this.values[i] === value){
-                    flag = false;
-                    break;
-                }
-            }
-            if(flag){
-                this.values.push(value);
-            }
-        },
-        _delValue:function(value){
-            for(var i = 0,len = this.values.length;i < len;i++){
-                if(this.values[i] === value){
-                    this.values.splice(i,1);
-                    break;
-                }
-            }
-        }
-    },
-})
+// Vue.component("mj-checkbox-group",{
+//     render:function(createElement){
+//         return createElement("div",{"class":"mj-checkbox-group"},this.$slots.default)
+//     },
+//     data:function(){
+//         return {
+//             values:[]
+//         }
+//     },
+//     methods:{
+//         _addValue:function(value){
+//             var flag = true;
+//             for(var i = 0,len = this.values.length;i < len;i++){
+//                 if(this.values[i] === value){
+//                     flag = false;
+//                     break;
+//                 }
+//             }
+//             if(flag){
+//                 this.values.push(value);
+//             }
+//         },
+//         _delValue:function(value){
+//             for(var i = 0,len = this.values.length;i < len;i++){
+//                 if(this.values[i] === value){
+//                     this.values.splice(i,1);
+//                     break;
+//                 }
+//             }
+//         }
+//     },
+// })
 //选择框
-Vue.component("mj-checkbox",{
-    render:function(createElement){
-        if(this.label){
-            var labelObj = createElement("label",{domProps:{innerHTML:this.label}})
-        }else{
-            var labelObj = "";
-        }
-        return createElement("div",{"class":{"mj-checkbox":true,"mj-checkbox-disabled":this.disabled && this.disabled !== "false"},on:{click:this.false === false || !this.disabled || this.disabled === "false" ? this._handleClick : function(){}}},[
-                createElement("div",{"class":{"mj-checkbox-checked":this.currValue}}),
-                labelObj
-            ])
-    },
-    props:{
-        value:{
-            validator: function (value) {
-                return typeof value === "boolean" || (typeof value === "number" && (value === 0 || value === 1));
-            },
-            default:false
-        },
-        data:String,
-        label:String,
-        disabled:{
-            validator: function (value) {
-                return typeof value === "boolean" || typeof value === "string";
-            },
-            default:false
-        },
-    },
-    data:function(){
-        return {
-            currValue:false
-        }
-    },
-    methods:{
-        _handleClick:function(){
-            this.currValue = !this.currValue;
-            if(typeof this.value === "boolean"){
-                this.$emit("input",this.currValue);
-            }else{
-                this.$emit("input",this.currValue ? 1 : 0);
-            }
-            this.$emit("click");
-        }
-    },
-    watch:{
-        value:function(){
-            this.currValue = this.value;
-            this.$emit("change");
-        },
-        currValue:function(){
-            if(this.currValue && this.$parent && /^vue-component-\d*-mj-checkbox-group$/.test(this.$parent.$vnode.tag) && this.$parent._addValue){
-                this.data && this.$parent._addValue(this.data);
-            }else if(!this.currValue && this.$parent && /^vue-component-\d*-mj-checkbox-group$/.test(this.$parent.$vnode.tag) && this.$parent._delValue){
-                this.data && this.$parent._delValue(this.data);
-            }
-        }
-    },
-    created:function(){
-        if(typeof this.value === "boolean"){
-            this.currValue = this.value;
-        }else if(typeof this.value === "number"){
-            this.currValue = (this.value !== 0);
-        }
-    }
-});
+// Vue.component("mj-checkbox",{
+//     render:function(createElement){
+//         if(this.label){
+//             var labelObj = createElement("label",{domProps:{innerHTML:this.label}})
+//         }else{
+//             var labelObj = "";
+//         }
+//         return createElement("div",{"class":{"mj-checkbox":true,"mj-checkbox-disabled":this.disabled && this.disabled !== "false"},on:{click:this.false === false || !this.disabled || this.disabled === "false" ? this._handleClick : function(){}}},[
+//                 createElement("div",{"class":{"mj-checkbox-checked":this.currValue}}),
+//                 labelObj
+//             ])
+//     },
+//     props:{
+//         value:{
+//             validator: function (value) {
+//                 return typeof value === "boolean" || (typeof value === "number" && (value === 0 || value === 1));
+//             },
+//             default:false
+//         },
+//         data:String,
+//         label:String,
+//         disabled:{
+//             validator: function (value) {
+//                 return typeof value === "boolean" || typeof value === "string";
+//             },
+//             default:false
+//         },
+//     },
+//     data:function(){
+//         return {
+//             currValue:false
+//         }
+//     },
+//     methods:{
+//         _handleClick:function(){
+//             this.currValue = !this.currValue;
+//             if(typeof this.value === "boolean"){
+//                 this.$emit("input",this.currValue);
+//             }else{
+//                 this.$emit("input",this.currValue ? 1 : 0);
+//             }
+//             this.$emit("click");
+//         }
+//     },
+//     watch:{
+//         value:function(){
+//             this.currValue = this.value;
+//             this.$emit("change");
+//         },
+//         currValue:function(){
+//             if(this.currValue && this.$parent && /^vue-component-\d*-mj-checkbox-group$/.test(this.$parent.$vnode.tag) && this.$parent._addValue){
+//                 this.data && this.$parent._addValue(this.data);
+//             }else if(!this.currValue && this.$parent && /^vue-component-\d*-mj-checkbox-group$/.test(this.$parent.$vnode.tag) && this.$parent._delValue){
+//                 this.data && this.$parent._delValue(this.data);
+//             }
+//         }
+//     },
+//     created:function(){
+//         if(typeof this.value === "boolean"){
+//             this.currValue = this.value;
+//         }else if(typeof this.value === "number"){
+//             this.currValue = (this.value !== 0);
+//         }
+//     }
+// });
 Vue.component("mj-form-item",{
     render:function(createElement){
         var parent = this.$parent;

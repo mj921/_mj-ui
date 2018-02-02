@@ -1,5 +1,7 @@
 import Vue from "vue";
 import Button from "./components/button/button.vue";
+import Checkbox from "./components/checkbox/checkbox.vue";
+import CheckboxGroup from "./components/checkbox/checkbox-group.vue";
 import Col from "./components/col/col.vue";
 import Input from "./components/input/input.vue";
 import Page from "./components/page/page.vue";
@@ -12,6 +14,8 @@ import Textarea from "./components/textarea/textarea.vue";
 
 const components = [
     Button,
+    Checkbox,
+    CheckboxGroup,
     Col,
     Input,
     Page,
@@ -34,6 +38,8 @@ if (typeof window !== 'undefined' && window.Vue) {
 
 module.exports = {
     Button,
+    Checkbox,
+    CheckboxGroup,
     Col,
     Input,
     Page,

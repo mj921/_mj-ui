@@ -39,17 +39,32 @@
             }
         },
         created:function(){
-            if(this.$parent && this.$parent.columnList){
-                this.$parent.columnList.push({
-                    prop:this._props.prop,
-                    label:this._props.label,
-                    width:this._props.width,
-                    align:this._props.align,
-                    fixed:this._props.fixed,
-                    formatter:this._props.formatter,
-                    checkbox:this._props.checkbox,
-                    filterCheckbox:this._props.filterCheckbox
-                });
+            if(this.$parent && this.$parent.$vnode && this.$parent.$vnode.tag && /^vue-component-\d*-mj-table$/.test(this.$parent.$vnode.tag)){
+                if(this.checkbox){
+                    if(!this.$parent.checkboxFlag){
+                        this.$parent.columnList.push({
+                            prop:this.prop,
+                            label:this.label,
+                            width:"60px",
+                            align:this.align,
+                            fixed:this.fixed,
+                            formatter:this.formatter,
+                            checkbox:this.checkbox
+                        });
+                        this.$parent.filterCheckbox = this.filterCheckbox || function(){return false;};
+                        this.$parent.checkboxFlag = true;
+                    }
+                }else{ 
+                    this.$parent.columnList.push({
+                        prop:this.prop,
+                        label:this.label,
+                        width:this.width,
+                        align:this.align,
+                        fixed:this.fixed,
+                        formatter:this.formatter,
+                        checkbox:this.checkbox
+                    });
+                }
             }
         },
         name:"mj-table-column"

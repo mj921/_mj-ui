@@ -34,9 +34,9 @@
         created:function(){
             if(!this.created && this.$parent && this.$parent.list && Array.isArray(this.$parent.list) && this.$parent.listLength !== undefined){
                 this.$parent.list.push({
-                    showFlag:this._props.showFlag,
-                    label:this._props.label || this.value,
-                    value:this._props.value,
+                    showFlag:this.showFlag,
+                    label:this.label || this.value,
+                    value:this.value,
                     attrs:this.$vnode.data.attrs,
                     _selectItemId:"_selectItemId" + this.$parent.listLength
                 });
@@ -44,9 +44,9 @@
                     this.$parent.str = this.label || this.value;
                     this.$parent.strVal = this.label || this.value;
                     this.$parent.selected = {
-                        showFlag:this._props.showFlag,
-                        label:this._props.label || this.value,
-                        value:this._props.value,
+                        showFlag:this.showFlag,
+                        label:this.label || this.value,
+                        value:this.value,
                         attrs:this.$vnode.data.attrs,
                         _selectItemId:"_selectItemId" + this.$parent.listLength
                     }

@@ -2,15 +2,10 @@
     
 </style>
 <template>
-    <div :class="'mj-button mj-button-' + this.size + 'mj-button-' + this.type + (isDisabled ? 'mj-button-disabled' : '')" @click="click()"><slot></slot></div>
+    <div :class="'mj-button mj-button-' + this.size + 'mj-button-' + this.type + (isDisabled ? 'mj-button-disabled' : '')" @click="_handleclick"><slot></slot></div>
 </template>
 <script>
     export default {
-        data(){
-            return {
-                isDisabled:false
-            }
-        },
         props:{
             size:{
                 type:String,
@@ -23,19 +18,19 @@
             type:{
                 type:String,
                 default:"default"
-            }
+            },
         },
         methods:{
-            click:function(){
-                if(this.isDisabled){
-                    return function(e){
-                        this.$emit("click",e)
-                    }
+            _handleclick:function(){
+                if(!this.isDisabled){
+                    this.$emit("click")
                 }
             }
         },
-        created:function(){
-            this.isDisabled = (this.disabled === "" || this.disabled === "disabled" || this.disabled === "true" || this.disabled) && this.disabled !== "false";
+        computed:{
+            isDisabled:function(){
+                return (this.disabled === "" || this.disabled === "disabled" || this.disabled === "true" || this.disabled) && this.disabled !== "false";
+            }
         },
         name:"mj-button"
     }

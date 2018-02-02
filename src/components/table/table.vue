@@ -109,18 +109,6 @@
         },
         methods:{
             objCopy,
-            //选择框选择方法
-            _clickCheckbox:function(i){
-                var self = this;
-                return function(){
-                    self.checkedList[i] = !self.checkedList[i];
-                    self.checkedList = objCopy(self.checkedList);
-                }
-            },
-            //全选框选择方法
-            _clickAllCheckbox:function(){
-                this.allChecked = !this.allChecked;
-            },
             _barMouseDown:function(e){
                 e = e || window.event;
                 if(e.pageX){

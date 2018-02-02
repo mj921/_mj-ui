@@ -91,7 +91,10 @@
                 type:Number,
                 default:0
             },
-            "page-change":Function,//当前页变化触发的方法
+            "page-change":{//当前页变化触发的方法
+                type:Function,
+                default:null
+            },
             "load-num":{//加载层数
                 type:Number,
                 default:0

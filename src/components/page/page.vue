@@ -33,7 +33,10 @@
                 type:Number,
                 default:0
             },
-            "page-change":Function,
+            "page-change":{
+                type:Function,
+                default:null
+            },
             total:{
                 type:Number,
                 default:0

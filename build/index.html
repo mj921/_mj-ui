@@ -90,6 +90,9 @@
             </mj-row>
         </mj-form>
         {{iptVal}}
+        <mj-dialog v-model="dialog" src="https://www.baidu.com">afaafagag
+            <div slot="footer">底部</div></mj-dialog>
+        <mj-button @click="dialog = true">显示dialog</mj-button>
     </div>
     <script src="vue.js"></script>
     <script src="bundle.js"></script>
@@ -115,7 +118,8 @@
                         c:"ccc"
                     }
                 ],
-                checkbox:true
+                checkbox:true,
+                dialog:false
             },
             methods:{
                 checkboxChange:function(){

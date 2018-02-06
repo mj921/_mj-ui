@@ -1190,85 +1190,85 @@ if(top != this){
 //         }
 //     }
 // })
-Vue.component("mj-dialog",{
-    render:function(createElement){
-        if(this.src && this.value){
-            var currSrc = this.src.indexOf("?") > 0 ? (this.src + "&mjrandomtime=" + this.randomtime) : (this.src + "?mjrandomtime=" + this.randomtime);
-            var bodyObj = createElement("div",{"class":"mj-dialog-body"},[createElement("iframe",{attrs:{src:currSrc}})]);
-        }else{
-            var bodyObj = createElement("div",{"class":"mj-dialog-body"},this.$slots.default);
-        }
-        var mainStyle = {paddingBottom:this.$slots.footer && this.$slots.footer.length > 0 ? "50px" : "0px"};
-        this.width && (mainStyle.width = this.width);
-        this.height && (mainStyle.height = this.height);
-        if(this.$slots.footer && this.$slots.footer.length > 0){
-            var footer = createElement("div",{"class":"mj-dialog-footer"},this.$slots.footer)
-        }else{
-            var footer = [];
-        }
-        return createElement("div",{"class":{"mj-dialog":true,"mj-dialog-hide":!this.value}},[
-                createElement("div",{"class":"mj-dialog-mask"}),
-                createElement("div",{style:mainStyle,"class":{"mj-dialog-default":true,"mj-dialog-large":this.size === "large","mj-dialog-full":this.size === "full","mj-dialog-small":this.size === "small","mj-dialog-middle":this.size === "middle"," mj-dialog-iframe":!!this.src}},[
-                    createElement("div",{"class":"mj-dialog-header"},[
-                        createElement("span",{domProps:{innerText:this.title}}),
-                        createElement("div",{"class":"mj-dialog-close",on:{click:this._handleClose}})
-                    ]),
-                    bodyObj,
-                    footer
-                ])
-            ]);
-    },
-    props:{
-        value:{
-            type:Boolean,
-            default:false
-        },
-        size:String,
-        src:String,
-        title:{
-            type:String,
-            default:"标题"
-        },
-        width:String,
-        height:String,
-        onClose:{
-            type:Function,
-            default:function(){}
-        }
-    },
-    data:function(){
-        return {
-            overflow:"",
-            randomtime:""
-        }
-    },
-    methods:{
-        _handleClose:function(){
-            this.onClose();
-            this.$emit("input",false);
-        }
-    },
-    watch:{
-        value:function(){
-            if(this.size === "full" && this.value){
-                document.body.style.overflow = "hidden";
-            }else{
-                document.body.style.overflow = this.overflow;
-            }
-            this.randomtime = new Date().getTime();
-            if(this.value === false){
-                this.$emit("close")
-            }
-        },
-        src:function(){
-            this.randomtime = new Date().getTime();
-        } 
-    },
-    created:function(){
-        this.overflow = document.body.style.overflow || "auto";
-        this.randomtime = new Date().getTime();
-    }
-})
+// Vue.component("mj-dialog",{
+//     render:function(createElement){
+//         if(this.src && this.value){
+//             var currSrc = this.src.indexOf("?") > 0 ? (this.src + "&mjrandomtime=" + this.randomtime) : (this.src + "?mjrandomtime=" + this.randomtime);
+//             var bodyObj = createElement("div",{"class":"mj-dialog-body"},[createElement("iframe",{attrs:{src:currSrc}})]);
+//         }else{
+//             var bodyObj = createElement("div",{"class":"mj-dialog-body"},this.$slots.default);
+//         }
+//         var mainStyle = {paddingBottom:this.$slots.footer && this.$slots.footer.length > 0 ? "50px" : "0px"};
+//         this.width && (mainStyle.width = this.width);
+//         this.height && (mainStyle.height = this.height);
+//         if(this.$slots.footer && this.$slots.footer.length > 0){
+//             var footer = createElement("div",{"class":"mj-dialog-footer"},this.$slots.footer)
+//         }else{
+//             var footer = [];
+//         }
+//         return createElement("div",{"class":{"mj-dialog":true,"mj-dialog-hide":!this.value}},[
+//                 createElement("div",{"class":"mj-dialog-mask"}),
+//                 createElement("div",{style:mainStyle,"class":{"mj-dialog-default":true,"mj-dialog-large":this.size === "large","mj-dialog-full":this.size === "full","mj-dialog-small":this.size === "small","mj-dialog-middle":this.size === "middle"," mj-dialog-iframe":!!this.src}},[
+//                     createElement("div",{"class":"mj-dialog-header"},[
+//                         createElement("span",{domProps:{innerText:this.title}}),
+//                         createElement("div",{"class":"mj-dialog-close",on:{click:this._handleClose}})
+//                     ]),
+//                     bodyObj,
+//                     footer
+//                 ])
+//             ]);
+//     },
+//     props:{
+//         value:{
+//             type:Boolean,
+//             default:false
+//         },
+//         size:String,
+//         src:String,
+//         title:{
+//             type:String,
+//             default:"标题"
+//         },
+//         width:String,
+//         height:String,
+//         onClose:{
+//             type:Function,
+//             default:function(){}
+//         }
+//     },
+//     data:function(){
+//         return {
+//             overflow:"",
+//             randomtime:""
+//         }
+//     },
+//     methods:{
+//         _handleClose:function(){
+//             this.onClose();
+//             this.$emit("input",false);
+//         }
+//     },
+//     watch:{
+//         value:function(){
+//             if(this.size === "full" && this.value){
+//                 document.body.style.overflow = "hidden";
+//             }else{
+//                 document.body.style.overflow = this.overflow;
+//             }
+//             this.randomtime = new Date().getTime();
+//             if(this.value === false){
+//                 this.$emit("close")
+//             }
+//         },
+//         src:function(){
+//             this.randomtime = new Date().getTime();
+//         } 
+//     },
+//     created:function(){
+//         this.overflow = document.body.style.overflow || "auto";
+//         this.randomtime = new Date().getTime();
+//     }
+// })
 //日期选择
 Vue.component("mj-data-picker",{
     render:function(createElement){

@@ -7,7 +7,10 @@ import Dialog from "./components/dialog/dialog.vue";
 import Form from "./components/form/form.vue";
 import FormItem from "./components/form/form-item.vue";
 import Input from "./components/input/input.vue";
+import Loading from "./components/loading/loading.vue";
 import Page from "./components/page/page.vue";
+import Radio from "./components/radio/radio.vue";
+import RadioItem from "./components/radio/radio-item.vue";
 import Row from "./components/row/row.vue";
 import Select from "./components/select/select.vue";
 import SelectItem from "./components/select/select-item.vue";
@@ -24,7 +27,10 @@ const components = [
     Form,
     FormItem,
     Input,
+    Loading,
     Page,
+    Radio,
+    RadioItem,
     Row,
     Select,
     SelectItem,
@@ -51,7 +57,10 @@ module.exports = {
     Form,
     FormItem,
     Input,
+    Loading,
     Page,
+    Radio,
+    RadioItem,
     Row,
     Select,
     SelectItem,

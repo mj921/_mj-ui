@@ -2011,37 +2011,37 @@ Vue.component("mj-tree",{
     }
 })
 //单选框
-Vue.component("mj-radio",{
-    render:function(createElement){
-        var children = [];
-        if(this.$slots.default){
-            for(var i = 0,len = this.$slots.default.length;i < len;i++){
-                if(this.$slots.default[i] && this.$slots.default[i].tag && /^vue-component-\d*-mj-radio-item/.test(this.$slots.default[i].tag)){
-                    children[children.length] = this.$slots.default[i];
-                }
-            }
-        }
-        return createElement("div",{"class":"mj-radio"},children);
-    },
-    props:{
-        value:String,
-        clear:{
-            type:Boolean,
-            default:false
-        },
-        defaultValue:String
-    },
-    methods:{
-        _checkeValue:function(value){
-            if(this.clear && this.value === value){
-                this.$emit("input",this.defaultValue);
-            }else{
-                this.$emit("input",value);
-            }
-            this.$emit("change");
-        }
-    }
-})
+// Vue.component("mj-radio",{
+//     render:function(createElement){
+//         var children = [];
+//         if(this.$slots.default){
+//             for(var i = 0,len = this.$slots.default.length;i < len;i++){
+//                 if(this.$slots.default[i] && this.$slots.default[i].tag && /^vue-component-\d*-mj-radio-item/.test(this.$slots.default[i].tag)){
+//                     children[children.length] = this.$slots.default[i];
+//                 }
+//             }
+//         }
+//         return createElement("div",{"class":"mj-radio"},children);
+//     },
+//     props:{
+//         value:String,
+//         clear:{
+//             type:Boolean,
+//             default:false
+//         },
+//         defaultValue:String
+//     },
+//     methods:{
+//         _checkeValue:function(value){
+//             if(this.clear && this.value === value){
+//                 this.$emit("input",this.defaultValue);
+//             }else{
+//                 this.$emit("input",value);
+//             }
+//             this.$emit("change");
+//         }
+//     }
+// })
 Vue.component("mj-loading",{
     render:function(createElement){
         return createElement("div",{"class":"mj-loading",style:{display:this.value ? "block" : "none"}},[createElement("div",{domProps:{innerText:this.text}})]);
@@ -2057,31 +2057,31 @@ Vue.component("mj-loading",{
         }
     }
 });
-Vue.component("mj-radio-item",{
-    render:function(createElement){
-        return createElement("dl",{"class":{"mj-radio-checked":this.$parent && this.$parent.value && this.value === this.$parent.value},on:{click:this._handleClick}},[
-            createElement("div",{"class":"mj-radio-div"}),
-            createElement("label",{domProps:{innerText:this.label}})
-        ])
-    },
-    props:{
-        value:{
-            type:String,
-            required:true
-        },
-        label:{
-            type:String,
-            required:true
-        }
-    },
-    methods:{
-        _handleClick:function(){
-            if(this.$parent && this.$parent._checkeValue){
-                this.$parent._checkeValue(this.value);
-            }
-        }
-    }
-})
+// Vue.component("mj-radio-item",{
+//     render:function(createElement){
+//         return createElement("dl",{"class":{"mj-radio-checked":this.$parent && this.$parent.value && this.value === this.$parent.value},on:{click:this._handleClick}},[
+//             createElement("div",{"class":"mj-radio-div"}),
+//             createElement("label",{domProps:{innerText:this.label}})
+//         ])
+//     },
+//     props:{
+//         value:{
+//             type:String,
+//             required:true
+//         },
+//         label:{
+//             type:String,
+//             required:true
+//         }
+//     },
+//     methods:{
+//         _handleClick:function(){
+//             if(this.$parent && this.$parent._checkeValue){
+//                 this.$parent._checkeValue(this.value);
+//             }
+//         }
+//     }
+// })
 //标签页
 Vue.component("mj-tab-panel",{
     render:function(createElement){

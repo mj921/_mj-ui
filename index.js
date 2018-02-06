@@ -2042,21 +2042,21 @@ Vue.component("mj-tree",{
 //         }
 //     }
 // })
-Vue.component("mj-loading",{
-    render:function(createElement){
-        return createElement("div",{"class":"mj-loading",style:{display:this.value ? "block" : "none"}},[createElement("div",{domProps:{innerText:this.text}})]);
-    },
-    props:{
-        value:{
-            type:Boolean,
-            default:false
-        },
-        text:{
-            type:String,
-            default:"处理中。。。"
-        }
-    }
-});
+// Vue.component("mj-loading",{
+//     render:function(createElement){
+//         return createElement("div",{"class":"mj-loading",style:{display:this.value ? "block" : "none"}},[createElement("div",{domProps:{innerText:this.text}})]);
+//     },
+//     props:{
+//         value:{
+//             type:Boolean,
+//             default:false
+//         },
+//         text:{
+//             type:String,
+//             default:"处理中。。。"
+//         }
+//     }
+// });
 // Vue.component("mj-radio-item",{
 //     render:function(createElement){
 //         return createElement("dl",{"class":{"mj-radio-checked":this.$parent && this.$parent.value && this.value === this.$parent.value},on:{click:this._handleClick}},[
@@ -2125,7 +2125,7 @@ Vue.component("mj-tabs",{
     },
 })
 //消息弹框
-var YgMessage = Vue.extend({
+var MjMessage = Vue.extend({
     template:"<div :class='\"mj-message mj-message-\" + type'><p>{{message}}</p></div>",
     props:{
         type:{
@@ -2135,7 +2135,7 @@ var YgMessage = Vue.extend({
         message:String,
     }
 })
-var YgConfirm = Vue.extend({
+var MjConfirm = Vue.extend({
     render:function(createElement){
         return createElement("div",{"class":"mj-confirm"},[
                 createElement("div",{"class":"mj-confirm-mask"}),
@@ -2173,7 +2173,7 @@ var YgConfirm = Vue.extend({
 })
 Vue.prototype.$message = function(opt){
     opt = opt || {};
-    var message = new YgMessage();
+    var message = new MjMessage();
     if(/^info|waring|error|success$/.test(opt.type)){
         message.type = opt.type;
     }else{
@@ -2188,7 +2188,7 @@ Vue.prototype.$message = function(opt){
 }
 Vue.prototype.$confirm = function(opt){
     opt = opt || {};
-    var confirm = new YgConfirm();
+    var confirm = new MjConfirm();
     confirm.message = (opt.message === undefined || opt.message === null) ? "" : opt.message;
     opt.title ? confirm.title = opt.title : "";
     opt.confirmBtnText ? confirm.confirmBtnText = opt.confirmBtnText : "";

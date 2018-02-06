@@ -29,6 +29,9 @@
             _handleBlur:function(e){
                 this.$parent && this.$parent.validate && this.$parent.validate(null,"blur");
                 this.$emit("blur");
+            },
+            resetData:function(data){
+                this.$emit("input",data);
             }
         },
         watch:{

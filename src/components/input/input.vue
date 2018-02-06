@@ -1,18 +1,12 @@
 <style></style>
 <template>
     <div  class='mj-input'>
-        <input ref='ipt' spellcheck='false' :value='currValue' :placeholder='placeholder' :type='type' :disabled='disabled' :readonly='readonly' @input='_handleInput' @focus='_handleFocus' @blur='_handleBlur' @change='_handleChange' />
+        <input spellcheck='false' v-model='currValue' :placeholder='placeholder' :type='type' :disabled='disabled' :readonly='readonly' @focus='_handleFocus' @blur='_handleBlur' @change='_handleChange' />
         <div class='mj-input-append' v-if='$slots.append && this.$slots.append.length > 0'><slot name='append'></slot></div>
     </div>
 </template>
 <script>
     export default {
-        data:function(){
-            return{
-                inputObj:null,
-                currValue:""
-            }
-        },
         props:{
             value:{
                 validator:function(value){
@@ -33,10 +27,6 @@
             input:Function
         },
         methods:{
-            _handleInput:function(e){
-                this.input && this.input(e);
-                this.$emit("input",e.target.value);
-            },
             _handleFocus:function(e){
                 this.$parent && this.$parent.validate && this.$parent.validate(null,"focus");
                 this.$emit("focus");
@@ -47,19 +37,28 @@
             },
             _handleChange:function(e){
                 this.$emit("change");
+            },
+            resetData:function(data){
+                this.currValue = data;
             }
         },
-        watch:{
-            value:function(){
-                this.currValue = this.value;
-                this.$emit("change");
+        computed:{
+            currValue:{
+                get:function(){
+                    return this.value;
+                },
+                set:function(val){
+                    if(this.$parent && this.$parent.childVal){
+                        this.$parent.childVal = val;
+                    }
+                    this.$emit("input",val);
+                }
             }
         },
         created:function(){
-            this.currValue = this.value;
-        },
-        mounted:function(){
-            this.inputObj = this.$refs.ipt;
+            if(this.$parent && this.$parent.isNeedValid !== undefined){
+                this.$parent.isNeedValid = true;
+            }
         },
         name:"mj-input"
     }

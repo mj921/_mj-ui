@@ -13,7 +13,7 @@
                 <mj-button>啊啊啊</mj-button>
             </mj-col>
             <mj-col :span="6" align="center">
-                <mj-input placeholder="asdad"></mj-input>
+                <mj-input placeholder="asdad" v-model="iptVal"></mj-input>
             </mj-col>
             <mj-col :span="6" align="center">
                 <mj-textarea placeholder="asdad" v-model="textarea"></mj-textarea>
@@ -80,6 +80,16 @@
         </mj-checkbox-group>
         <mj-checkbox v-model="checkbox" label="阿发"></mj-checkbox>
         <mj-button @click="ccccccc">click</mj-button>
+        <mj-form>
+            <mj-row>
+                <mj-col>
+                    <div>
+                        <mj-form-item label="aaa" required></mj-form-item>
+                    </div>
+                </mj-col>
+            </mj-row>
+        </mj-form>
+        {{iptVal}}
     </div>
     <script src="vue.js"></script>
     <script src="bundle.js"></script>
@@ -87,6 +97,7 @@
         var app = new Vue({
             el:"#app",
             data:{
+                iptVal:"",
                 textarea:"asdadasd",
                 select:"ada",
                 tableData:[

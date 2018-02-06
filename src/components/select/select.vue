@@ -79,6 +79,9 @@
                 }else{
                     this.isShow = !this.isShow;
                 }
+            },
+            resetData:function(data){
+                this.$emit("input",data);
             }
         },
         watch:{

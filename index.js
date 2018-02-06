@@ -895,301 +895,301 @@ if(top != this){
 //         }
 //     }
 // });
-Vue.component("mj-form-item",{
-    render:function(createElement){
-        var parent = this.$parent;
-        var labelWidth = this.labelWidth === undefined || this.labelWidth === "" ? ((parent.$vnode && parent.$vnode.tag && /^vue-component-\d*-mj-form$/.test(parent.$vnode.tag)) ? parent.labelWidth : undefined) : this.labelWidth;
-        var labelAlign = this.labelAlign || (parent.$vnode && parent.$vnode.tag && /^vue-component-\d*-mj-form$/.test(parent.$vnode.tag)) ? parent.labelAlign : "left";
-        var style = {};
-        if(labelWidth){
-            style.width = labelWidth;
-        }
-        if(labelAlign){
-            style.textAlign = labelAlign;
-        }
-        var pStyle = {minWidth:this.autoWidth ? "auto" : this.size * 272 - 10 + "px"};
-        this.autoWidth ? pStyle.paddingBottom = "0" : null;
-        var isRequired = false;
-        if(this.rule){
-            for(var i = 0,len = this.rule.length;i < len;i++){
-                if(this.rule[i].required && this.rule[i].required === true){
-                    isRequired = true;
-                }
-            }
-        }
-        return createElement("div",{"class":{"mj-form-item":true,"mj-form-error":this.isError,"mj-form-item-inline":!!this.inline},style:pStyle},[
-                createElement("label",{"class":"mj-form-item-label",style:style},[
-                    createElement("span",{"class":{"mj-form-required":this.required !== "false" || isRequired},domProps:{innerHTML:this.label !== undefined ? this.label : ""}})
-                ]),
-                createElement("div",{"class":"mj-form-item-content"},[
-                    this.$slots.default,
-                    createElement("div",{"class":{"mj-form-message":true},domProps:{innerHTML:this.message}})
-                ])
-            ]);
-    },
-    props:{
-        label:String,
-        labelWidth:String,
-        prop:String,
-        rules:Array,
-        inline:String,
-        required:{
-            type:String,
-            default:"false"
-        },
-        size:{
-            type:Number,
-            default:1
-        },
-        "label-align":String,
-        "auto-width":{
-            type:Boolean,
-            default:false
-        }
-    },
-    watch:{
-        prop:function(){
-            this.rule = (this.$parent.rules && this.$parent.rules[this.prop]) || [];
-        }
-    },
-    data:function(){
-        return {
-            isValid:true,
-            isError:false,
-            message:"",
-            style:{},
-            rule:[]
-        }
-    },
-    methods:{
-        validate:function(callback,type,mod,rules){
-            if(!this.isValid){
-                return true;
-            }
-            if(!this.prop || !this._isNeedValid()){
-                callback && callback(true);
-                this.message = "";
-                this.isError = false;
-                return true;
-            }
-            if(mod){
-                var model = mod[this.prop];
-            }else if(this.$parent && this.$parent.model){
-                var model = this.$parent.model[this.prop];
-            }else{
-                callback && callback(true);
-                this.message = "";
-                this.isError = false;
-                return true;
-            }
-            if(rules && rules[this.prop]){
-                for(var i = 0,len = rules[this.prop].length;i < len;i++){
-                    if((!type || type === rules[this.prop][i].trigger) && rules[this.prop][i].required && model === ""){
-                        callback && callback(false);
-                        this.message = rules[this.prop][i].message;
-                        this.isError = true;
-                        return false;
-                    }
-                    if((!type || type === rules[this.prop][i].trigger) && rules[this.prop][i].validator){
-                        var self = this;
-                        var flag = true;
-                        rules[this.prop][i].validator(model,function(message){
-                            if(message && message.length > 0){
-                                callback && callback(false);
-                                self.message = message;
-                                self.isError = true;
-                                flag = false;
-                            }else{
-                                flag = false;
-                            }
-                        })
-                        if(!flag){
-                            self.isError = true;
-                            return false;
-                        }
-                    }
-                }
-            }else{
-                for(var i = 0,len = this.rule.length;i < len;i++){
-                    if((!type || type === this.rule[i].trigger) && this.rule[i].required && model === ""){
-                        callback && callback(false);
-                        this.message = this.rule[i].message;
-                        this.isError = true;
-                        return false;
-                    }
-                    if((!type || type === this.rule[i].trigger) && this.rule[i].validator){
-                        var self = this;
-                        var flag = true;
-                        this.rule[i].validator(model,function(message){
-                            if(message && message.length > 0){
-                                callback && callback(false);
-                                self.message = message;
-                                self.isError = true;
-                                flag = false;
-                            }else{
-                                flag = false;
-                            }
-                        })
-                        if(!flag){
-                            self.isError = true;
-                            return false;
-                        }
-                    }
-                }
-            }
-            callback && callback(true)
-            this.message = "";
-            this.isError = false;
-            return true;
-        },
-        resetData:function(data){
-            this.isValid = false;
-            for(var i = 0;i < this.$slots.default.length;i++){
-                if(this.$slots.default[i] && this.$slots.default[i].tag && /^vue-component-\d*-mj-data-picker|vue-component-\d*-mj-input|vue-component-\d*-mj-select|vue-component-\d*-mj-checkbox|vue-component-\d*-mj-textarea$/.test(this.$slots.default[i].tag)){
-                    this.$slots.default[i].componentInstance.$emit("input",data);
-                }
-            }
-            this.isValid = true;
-        },
-        _isNeedValid:function(){
-            for(var i = 0;i < this.$slots.default.length;i++){
-                if(this.$slots.default[i] && this.$slots.default[i].tag && /^vue-component-\d*-mj-data-picker|vue-component-\d*-mj-input|vue-component-\d*-mj-select|vue-component-\d*-mj-textarea$/.test(this.$slots.default[i].tag)){
-                    return true;
-                }
-            }
-            return false;
-        }
-    },
-    created:function(){
-        if(this.rules){
-            this.rule = this.rules;
-        }else{
-            this.rule = (this.$parent.rules && this.$parent.rules[this.prop]) || [];
-        }
-    }
-})
-Vue.component("mj-form",{
-    render:function(createElement){
-        if(this.align === "center" || this.align === "left" || this.align === "right"){
-            var textAlign = this.align;
-        }else{
-            var textAlign = "left";
-        }
-        var children = [];
-        if(this.$slots.default){
-            for(var i = 0,len = this.$slots.default.length;i < len;i++){
-                if(this.$slots.default[i].tag || this.$slots.default[i].text !== " "){
-                    children[children.length] = this.$slots.default[i];
-                }
-            }
-        }
-        return createElement("div",{"class":{"mj-form":true,"mj-form-inline-block":!!this.align},style:{textAlign:textAlign}},[createElement("form",{ref:"form","class":{"mj-form-inline":this.inline},attrs:{action:this.action,enctype:this.enctype,method:this.method,target:this.target}},children)])
-    },
-    props:{
-        inline:Boolean,
-        action:String,
-        enctype:String,
-        method:String,
-        target:String,
-        method:String,
-        labelWidth:String,
-        model:Object,
-        rules:{
-            type:Object,
-            default:function(){return {}}
-        },
-        align:String,
-        "label-align":{
-            type:String,
-            default:"left"
-        }
-    },
-    data:function(){
-        return {
-            resetModel:null
-        }
-    },
-    methods:{
-        validatechildren:function(list){
-            var flag = true;
-            for(var i = 0,len = list.length;i < len;i++){
-                if(list[i].prop && list[i].$vnode && list[i].$vnode.tag && /^vue-component-\d*-mj-form-item$/.test(list[i].$vnode.tag) && list[i].validate && !list[i].validate(null,"",this.model,this.rules)){
-                    flag = false;
-                }
-                if(list[i] && list[i].$vnode && list[i].$vnode.child && list[i].$vnode.child.$children && list[i].$vnode.child.$children.length > 0){
-                    if(!this.validatechildren(list[i].$vnode.child.$children)){
-                        flag = false;
-                    }
-                }
-                if(list[i] && list[i].child && list[i].child.$children && list[i].$children.length > 0){
-                    if(!this.validatechildren(list[i].child.$children)){
-                        flag = false;
-                    }
-                }else if(list[i] && list[i].children){
-                    for(var j = 0,length = list[i].children.length;j < length;j++){
-                        if(list[i].children[j] && list[i].children[j].child && list[i].children[j].child.$children && list[i].children[j].child.$children.length > 0){
-                            if(!this.validatechildren(list[i].children[j].child.$children)){
-                                flag = false;
-                            }
-                        }
-                    }
-                }
-            }
-            return flag;
-        },
-        validate:function(callback){
-            var flag = true;
-            for(var i = 0,len = this.$slots.default.length;i < len;i++){
-                if(this.$slots.default[i].componentInstance && this.$slots.default[i].componentInstance.validate && !this.$slots.default[i].componentInstance.validate(null,"",this.model,this.rules)){
-                    flag = false;
-                }
-                if(this.$slots.default[i] && this.$slots.default[i].child && this.$slots.default[i].child.$children && this.$slots.default[i].child.$children.length > 0){
-                    if(!this.validatechildren(this.$slots.default[i].child.$children)){
-                        flag = false;
-                    }
-                }else if(this.$slots.default[i] && this.$slots.default[i].children){
-                    for(var j = 0,length = this.$slots.default[i].children.length;j < length;j++){
-                        if(!!this.$slots.default[i].children[j] && !!this.$slots.default[i].children[j].child && !!this.$slots.default[i].children[j].child.$children && this.$slots.default[i].children[j].child.$children.length > 0){
-                            if(!this.validatechildren(this.$slots.default[i].children[j].child.$children)){
-                                flag = false;
-                            }
-                        }
-                    }
-                }
-            }
-            callback && callback(flag);
-            return flag;
-        },
-        resetChildren:function(list){
-            for(var i = 0,len = list.length;i < len;i++){
-                if(list[i].resetData && list[i].prop && list[i].$vnode && list[i].$vnode.tag && /^vue-component-\d*-mj-form-item$/.test(list[i].$vnode.tag)){
-                    list[i].resetData(this.resetModel[list[i].prop] || "");
-                }
-                if(list[i] && list[i].$children && list[i].$children.length > 0){
-                    this.resetChildren(list[i].$children);
-                }
-            }
-        },
-        resetForm:function(){
-            for(var i = 0,len = this.$slots.default.length;i < len;i++){
-                if(this.$slots.default[i].componentInstance && this.$slots.default[i].componentInstance.resetData && this.$slots.default[i].componentInstance.prop){
-                    this.$slots.default[i].componentInstance.resetData(this.resetModel[this.$slots.default[i].componentInstance.prop] === undefined ? "" : this.resetModel[this.$slots.default[i].componentInstance.prop]);
-                }
-                if(this.$slots.default[i] && this.$slots.default[i].child && this.$slots.default[i].child.$children && this.$slots.default[i].child.$children.length > 0){
-                    this.resetChildren(this.$slots.default[i].child.$children);
-                }
-            }
-        },
-        submit:function(){
-            this.$refs.form.submit();
-        }
-    },
-    created:function(){
-        if(!this.resetModel){
-            this.resetModel = objCopy(this.model);
-        }
-    }
-})
+// Vue.component("mj-form-item",{
+//     render:function(createElement){
+//         var parent = this.$parent;
+//         var labelWidth = this.labelWidth === undefined || this.labelWidth === "" ? ((parent.$vnode && parent.$vnode.tag && /^vue-component-\d*-mj-form$/.test(parent.$vnode.tag)) ? parent.labelWidth : undefined) : this.labelWidth;
+//         var labelAlign = this.labelAlign || (parent.$vnode && parent.$vnode.tag && /^vue-component-\d*-mj-form$/.test(parent.$vnode.tag)) ? parent.labelAlign : "left";
+//         var style = {};
+//         if(labelWidth){
+//             style.width = labelWidth;
+//         }
+//         if(labelAlign){
+//             style.textAlign = labelAlign;
+//         }
+//         var pStyle = {minWidth:this.autoWidth ? "auto" : this.size * 272 - 10 + "px"};
+//         this.autoWidth ? pStyle.paddingBottom = "0" : null;
+//         var isRequired = false;
+//         if(this.rule){
+//             for(var i = 0,len = this.rule.length;i < len;i++){
+//                 if(this.rule[i].required && this.rule[i].required === true){
+//                     isRequired = true;
+//                 }
+//             }
+//         }
+//         return createElement("div",{"class":{"mj-form-item":true,"mj-form-error":this.isError,"mj-form-item-inline":!!this.inline},style:pStyle},[
+//                 createElement("label",{"class":"mj-form-item-label",style:style},[
+//                     createElement("span",{"class":{"mj-form-required":this.required !== "false" || isRequired},domProps:{innerHTML:this.label !== undefined ? this.label : ""}})
+//                 ]),
+//                 createElement("div",{"class":"mj-form-item-content"},[
+//                     this.$slots.default,
+//                     createElement("div",{"class":{"mj-form-message":true},domProps:{innerHTML:this.message}})
+//                 ])
+//             ]);
+//     },
+//     props:{
+//         label:String,
+//         labelWidth:String,
+//         prop:String,
+//         rules:Array,
+//         inline:String,
+//         required:{
+//             type:String,
+//             default:"false"
+//         },
+//         size:{
+//             type:Number,
+//             default:1
+//         },
+//         "label-align":String,
+//         "auto-width":{
+//             type:Boolean,
+//             default:false
+//         }
+//     },
+//     watch:{
+//         prop:function(){
+//             this.rule = (this.$parent.rules && this.$parent.rules[this.prop]) || [];
+//         }
+//     },
+//     data:function(){
+//         return {
+//             isValid:true,
+//             isError:false,
+//             message:"",
+//             style:{},
+//             rule:[]
+//         }
+//     },
+//     methods:{
+//         validate:function(callback,type,mod,rules){
+//             if(!this.isValid){
+//                 return true;
+//             }
+//             if(!this.prop || !this._isNeedValid()){
+//                 callback && callback(true);
+//                 this.message = "";
+//                 this.isError = false;
+//                 return true;
+//             }
+//             if(mod){
+//                 var model = mod[this.prop];
+//             }else if(this.$parent && this.$parent.model){
+//                 var model = this.$parent.model[this.prop];
+//             }else{
+//                 callback && callback(true);
+//                 this.message = "";
+//                 this.isError = false;
+//                 return true;
+//             }
+//             if(rules && rules[this.prop]){
+//                 for(var i = 0,len = rules[this.prop].length;i < len;i++){
+//                     if((!type || type === rules[this.prop][i].trigger) && rules[this.prop][i].required && model === ""){
+//                         callback && callback(false);
+//                         this.message = rules[this.prop][i].message;
+//                         this.isError = true;
+//                         return false;
+//                     }
+//                     if((!type || type === rules[this.prop][i].trigger) && rules[this.prop][i].validator){
+//                         var self = this;
+//                         var flag = true;
+//                         rules[this.prop][i].validator(model,function(message){
+//                             if(message && message.length > 0){
+//                                 callback && callback(false);
+//                                 self.message = message;
+//                                 self.isError = true;
+//                                 flag = false;
+//                             }else{
+//                                 flag = false;
+//                             }
+//                         })
+//                         if(!flag){
+//                             self.isError = true;
+//                             return false;
+//                         }
+//                     }
+//                 }
+//             }else{
+//                 for(var i = 0,len = this.rule.length;i < len;i++){
+//                     if((!type || type === this.rule[i].trigger) && this.rule[i].required && model === ""){
+//                         callback && callback(false);
+//                         this.message = this.rule[i].message;
+//                         this.isError = true;
+//                         return false;
+//                     }
+//                     if((!type || type === this.rule[i].trigger) && this.rule[i].validator){
+//                         var self = this;
+//                         var flag = true;
+//                         this.rule[i].validator(model,function(message){
+//                             if(message && message.length > 0){
+//                                 callback && callback(false);
+//                                 self.message = message;
+//                                 self.isError = true;
+//                                 flag = false;
+//                             }else{
+//                                 flag = false;
+//                             }
+//                         })
+//                         if(!flag){
+//                             self.isError = true;
+//                             return false;
+//                         }
+//                     }
+//                 }
+//             }
+//             callback && callback(true)
+//             this.message = "";
+//             this.isError = false;
+//             return true;
+//         },
+//         resetData:function(data){
+//             this.isValid = false;
+//             for(var i = 0;i < this.$slots.default.length;i++){
+//                 if(this.$slots.default[i] && this.$slots.default[i].tag && /^vue-component-\d*-mj-data-picker|vue-component-\d*-mj-input|vue-component-\d*-mj-select|vue-component-\d*-mj-checkbox|vue-component-\d*-mj-textarea$/.test(this.$slots.default[i].tag)){
+//                     this.$slots.default[i].componentInstance.$emit("input",data);
+//                 }
+//             }
+//             this.isValid = true;
+//         },
+//         _isNeedValid:function(){
+//             for(var i = 0;i < this.$slots.default.length;i++){
+//                 if(this.$slots.default[i] && this.$slots.default[i].tag && /^vue-component-\d*-mj-data-picker|vue-component-\d*-mj-input|vue-component-\d*-mj-select|vue-component-\d*-mj-textarea$/.test(this.$slots.default[i].tag)){
+//                     return true;
+//                 }
+//             }
+//             return false;
+//         }
+//     },
+//     created:function(){
+//         if(this.rules){
+//             this.rule = this.rules;
+//         }else{
+//             this.rule = (this.$parent.rules && this.$parent.rules[this.prop]) || [];
+//         }
+//     }
+// })
+// Vue.component("mj-form",{
+//     render:function(createElement){
+//         if(this.align === "center" || this.align === "left" || this.align === "right"){
+//             var textAlign = this.align;
+//         }else{
+//             var textAlign = "left";
+//         }
+//         var children = [];
+//         if(this.$slots.default){
+//             for(var i = 0,len = this.$slots.default.length;i < len;i++){
+//                 if(this.$slots.default[i].tag || this.$slots.default[i].text !== " "){
+//                     children[children.length] = this.$slots.default[i];
+//                 }
+//             }
+//         }
+//         return createElement("div",{"class":{"mj-form":true,"mj-form-inline-block":!!this.align},style:{textAlign:textAlign}},[createElement("form",{ref:"form","class":{"mj-form-inline":this.inline},attrs:{action:this.action,enctype:this.enctype,method:this.method,target:this.target}},children)])
+//     },
+//     props:{
+//         inline:Boolean,
+//         action:String,
+//         enctype:String,
+//         method:String,
+//         target:String,
+//         method:String,
+//         labelWidth:String,
+//         model:Object,
+//         rules:{
+//             type:Object,
+//             default:function(){return {}}
+//         },
+//         align:String,
+//         "label-align":{
+//             type:String,
+//             default:"left"
+//         }
+//     },
+//     data:function(){
+//         return {
+//             resetModel:null
+//         }
+//     },
+//     methods:{
+//         validatechildren:function(list){
+//             var flag = true;
+//             for(var i = 0,len = list.length;i < len;i++){
+//                 if(list[i].prop && list[i].$vnode && list[i].$vnode.tag && /^vue-component-\d*-mj-form-item$/.test(list[i].$vnode.tag) && list[i].validate && !list[i].validate(null,"",this.model,this.rules)){
+//                     flag = false;
+//                 }
+//                 if(list[i] && list[i].$vnode && list[i].$vnode.child && list[i].$vnode.child.$children && list[i].$vnode.child.$children.length > 0){
+//                     if(!this.validatechildren(list[i].$vnode.child.$children)){
+//                         flag = false;
+//                     }
+//                 }
+//                 if(list[i] && list[i].child && list[i].child.$children && list[i].$children.length > 0){
+//                     if(!this.validatechildren(list[i].child.$children)){
+//                         flag = false;
+//                     }
+//                 }else if(list[i] && list[i].children){
+//                     for(var j = 0,length = list[i].children.length;j < length;j++){
+//                         if(list[i].children[j] && list[i].children[j].child && list[i].children[j].child.$children && list[i].children[j].child.$children.length > 0){
+//                             if(!this.validatechildren(list[i].children[j].child.$children)){
+//                                 flag = false;
+//                             }
+//                         }
+//                     }
+//                 }
+//             }
+//             return flag;
+//         },
+//         validate:function(callback){
+//             var flag = true;
+//             for(var i = 0,len = this.$slots.default.length;i < len;i++){
+//                 if(this.$slots.default[i].componentInstance && this.$slots.default[i].componentInstance.validate && !this.$slots.default[i].componentInstance.validate(null,"",this.model,this.rules)){
+//                     flag = false;
+//                 }
+//                 if(this.$slots.default[i] && this.$slots.default[i].child && this.$slots.default[i].child.$children && this.$slots.default[i].child.$children.length > 0){
+//                     if(!this.validatechildren(this.$slots.default[i].child.$children)){
+//                         flag = false;
+//                     }
+//                 }else if(this.$slots.default[i] && this.$slots.default[i].children){
+//                     for(var j = 0,length = this.$slots.default[i].children.length;j < length;j++){
+//                         if(!!this.$slots.default[i].children[j] && !!this.$slots.default[i].children[j].child && !!this.$slots.default[i].children[j].child.$children && this.$slots.default[i].children[j].child.$children.length > 0){
+//                             if(!this.validatechildren(this.$slots.default[i].children[j].child.$children)){
+//                                 flag = false;
+//                             }
+//                         }
+//                     }
+//                 }
+//             }
+//             callback && callback(flag);
+//             return flag;
+//         },
+//         resetChildren:function(list){
+//             for(var i = 0,len = list.length;i < len;i++){
+//                 if(list[i].resetData && list[i].prop && list[i].$vnode && list[i].$vnode.tag && /^vue-component-\d*-mj-form-item$/.test(list[i].$vnode.tag)){
+//                     list[i].resetData(this.resetModel[list[i].prop] || "");
+//                 }
+//                 if(list[i] && list[i].$children && list[i].$children.length > 0){
+//                     this.resetChildren(list[i].$children);
+//                 }
+//             }
+//         },
+//         resetForm:function(){
+//             for(var i = 0,len = this.$slots.default.length;i < len;i++){
+//                 if(this.$slots.default[i].componentInstance && this.$slots.default[i].componentInstance.resetData && this.$slots.default[i].componentInstance.prop){
+//                     this.$slots.default[i].componentInstance.resetData(this.resetModel[this.$slots.default[i].componentInstance.prop] === undefined ? "" : this.resetModel[this.$slots.default[i].componentInstance.prop]);
+//                 }
+//                 if(this.$slots.default[i] && this.$slots.default[i].child && this.$slots.default[i].child.$children && this.$slots.default[i].child.$children.length > 0){
+//                     this.resetChildren(this.$slots.default[i].child.$children);
+//                 }
+//             }
+//         },
+//         submit:function(){
+//             this.$refs.form.submit();
+//         }
+//     },
+//     created:function(){
+//         if(!this.resetModel){
+//             this.resetModel = objCopy(this.model);
+//         }
+//     }
+// })
 Vue.component("mj-dialog",{
     render:function(createElement){
         if(this.src && this.value){

@@ -44,6 +44,9 @@
                     this.$emit("input",!this.value);
                     this.$emit("click");
                 }
+            },
+            resetData:function(data){
+                this.$emit("input",data);
             }
         },
         watch:{

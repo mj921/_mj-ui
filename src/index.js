@@ -3,6 +3,8 @@ import Button from "./components/button/button.vue";
 import Checkbox from "./components/checkbox/checkbox.vue";
 import CheckboxGroup from "./components/checkbox/checkbox-group.vue";
 import Col from "./components/col/col.vue";
+import Form from "./components/form/form.vue";
+import FormItem from "./components/form/form-item.vue";
 import Input from "./components/input/input.vue";
 import Page from "./components/page/page.vue";
 import Row from "./components/row/row.vue";
@@ -17,6 +19,8 @@ const components = [
     Checkbox,
     CheckboxGroup,
     Col,
+    Form,
+    FormItem,
     Input,
     Page,
     Row,
@@ -41,6 +45,8 @@ module.exports = {
     Checkbox,
     CheckboxGroup,
     Col,
+    Form,
+    FormItem,
     Input,
     Page,
     Row,

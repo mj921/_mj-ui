@@ -114,6 +114,7 @@
             <mj-tab-panel title="8">啊发发</mj-tab-panel>
             
         </mj-tab>
+        <mj-date-picker v-model="datepicker" type="time"></mj-date-picker>
     </div>
     <script src="vue.js"></script>
     <script src="mj-ui.js"></script>
@@ -141,7 +142,8 @@
                 ],
                 checkbox:true,
                 dialog:false,
-                radio:"1"
+                radio:"1",
+                datepicker:""
             },
             methods:{
                 checkboxChange:function(){

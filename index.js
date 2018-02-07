@@ -1270,590 +1270,590 @@ if(top != this){
 //     }
 // })
 //日期选择
-Vue.component("mj-data-picker",{
-    render:function(createElement){
-        var list = [];
-        var weekText = ["日","一","二","三","四","五","六"];
-        for(var i = 0;i < 7;i++){
-            list[i] = createElement("dl",{domProps:{innerText:weekText[i]}})
-        }
-        for(var i = 0;i < this.weekDay;i++){
-            list[i + 7] = createElement("dl")
-        }
-        for(var i = 0;i < this.days;i++){
-            var disabledDayFlag = this.year === this.minYear && this.month === this.minMonth && i + 1 < this.minDay || (this.year === this.maxYear && this.month === this.maxMonth && this.maxDay !== -1 && i + 1 > this.maxDay);
-            list[i + 7 + this.weekDay] = createElement("dl",{"class":{"mj-data-current":+this.day === (i + 1),"mj-data-day":true,"mj-data-disabled":disabledDayFlag},domProps:{innerText:this.addZero(i + 1)},on:{click:disabledDayFlag ? function(){} : this._selectDay}})
-        }
-        var yearText = [];
-        yearText[0] = createElement("span",{domProps:{innerText:this.year + "年"},on:{click:this._showYearList}});
-        if(this.type !== "year"){
-            yearText[1] = createElement("span",{domProps:{innerText:this.month + "月"},on:{click:this._showMonthList}});
-        }
-        if(this.type === "time"){
-            var hourList = [];
-            var minuteList = [];
-            var secondList = [];
-            hourList[0] = createElement("li");
-            hourList[1] = createElement("li");
-            minuteList[0] = createElement("li");
-            minuteList[1] = createElement("li");
-            secondList[0] = createElement("li");
-            secondList[1] = createElement("li");
-            for(var i = 0;i < 60;i++){
-                if(i < 24){
-                    hourList[i + 2] = createElement("li",{"class":{"mj-currtime":this.hour === this.addZero(i)},domProps:{innerText:this.addZero(i)}});
-                }
-                minuteList[i + 2] = createElement("li",{"class":{"mj-currtime":this.minute === this.addZero(i)},domProps:{innerText:this.addZero(i)}});
-                secondList[i + 2] = createElement("li",{"class":{"mj-currtime":this.second === this.addZero(i)},domProps:{innerText:this.addZero(i)}});
-            }
-            hourList[hourList.length] = createElement("li");
-            hourList[hourList.length] = createElement("li");
-            minuteList[minuteList.length] = createElement("li");
-            minuteList[minuteList.length] = createElement("li");
-            secondList[secondList.length] = createElement("li");
-            secondList[secondList.length] = createElement("li");
-            var times = createElement("div",{"class":"mj-data-times"},[
-                createElement("input",{domProps:{value:this.year + "-" + this.month + "-" + this.day}}),
-                createElement("input",{domProps:{value:this.hour + ":" + this.minute + ":" + this.second},on:{click:this._timeClick,blur:this._timeBlur},ref:"timeIpt"}),
-                createElement("div",{"class":{"mj-data-times-main":true,"hidden":this.isTimeHide}},[
-                    createElement("div",{"class":"mj-data-times-list"},[
-                        createElement("div",[
-                            createElement("div",{on:{scroll:this._hourScroll},ref:"hourList"},[
-                                createElement("ul",hourList)
-                            ]),
-                        ]),
-                        createElement("div",[
-                            createElement("div",{on:{scroll:this._minuteScroll},ref:"minuteList"},[
-                                createElement("ul",minuteList)
-                            ]),
-                        ]),
-                        createElement("div",[
-                            createElement("div",{on:{scroll:this._secondScroll},ref:"secondList"},[
-                                createElement("ul",secondList)
-                            ])
-                        ]),
-                    ]),
-                    createElement("div",{"class":"mj-data-times-btns"},[
-                        createElement("div",{domProps:{innerText:"确定"},on:{click:this._hideTimeList}})
-                    ])
-                ])
-            ]);
-        }else{
-            var times = [];
-        }
-        var yeardls = [];
-        for(var i = 0;i < 10;i++){
-            var disabledYearFlag = this.maxYear !== -1 && this.maxYear < this.yearList[i] || this.yearList[i] < this.minYear;
-            yeardls[i] = createElement("dl",{"class":{"currYear":this.yearList[i] === +this.year,"disabledYear":disabledYearFlag},domProps:{innerText:this.yearList[i]},on:{click:disabledYearFlag ? function(){} : this._yearClick}})
-        }
-        var monthdls = [];
-        for(var i = 0;i < 12;i++){
-            var disabledMonthFlag = this.maxYear === this.year && this.maxMonth < (i + 1) || (this.minYear === this.year && this.minMonth > (i + 1));
-            monthdls[i] = createElement("dl",{"class":{"currYear":(i + 1) === +this.month,"disabledYear":disabledMonthFlag},domProps:{innerText:this.monthList[i]},on:{click:disabledMonthFlag ? function(){} : this._monthClick},attrs:{"data-month":i + 1}})
-        }
-        return createElement("div",{"class":"mj-data-picker",ref:"datePicker"},[
-                createElement("input",{"class":"mj-data-input",attrs:{value:this.value,readonly:true},on:{blur:this._handleBlur,click:this._handleClick},ref:"input"}),
-                createElement("i",{"class":"mj-data-icon",on:{click:this._clearClick},ref:"icon"}),
-                createElement("div",{"class":{"mj-data-main":true,"mj-data-main-bottom":!this.isTop,"hidden":this.isHide,"mj-data-main-top":this.isTop},on:{click:this._stopPropagationFun}},[
-                    times,
-                    createElement("div",{"class":"mj-data-years"},[
-                        createElement("div",{"class":"mj-data-years-btn mj-data-prev-year",on:{click:this.prevYear}},[
-                            createElement("i",{"class":"mj-data-prev"}),
-                            createElement("i",{"class":"mj-data-prev"})
-                        ]),
-                        createElement("div",{"class":"mj-data-years-btn mj-data-prev-month",on:{click:this.prevMonth}},[
-                            createElement("i",{"class":"mj-data-prev"})
-                        ]),
-                        createElement("div",{"class":"mj-data-years-text"},yearText),
-                        createElement("div",{"class":"mj-data-years-btn mj-data-next-month",on:{click:this.nextMonth}},[
-                            createElement("i",{"class":"mj-data-next"})
-                        ]),
-                        createElement("div",{"class":"mj-data-years-btn mj-data-next-year",on:{click:this.nextYear}},[
-                            createElement("i",{"class":"mj-data-next"}),
-                            createElement("i",{"class":"mj-data-next"})
-                        ]),
-                        createElement("div",{"class":{"mj-data-yearList":true,"hidden":this.isMonthHide}},monthdls),
-                        createElement("div",{"class":{"mj-data-yearList":true,"hidden":this.isYearHide}},yeardls)
-                    ]),
-                    createElement("div",{"class":"mj-data-list"},list),
-                    createElement("div",{"class":"mj-data-button"},[
-                        createElement("div",{"class":"mj-data-button-cancle",domProps:{innerText:"取消"},on:{click:this._handleCancle}}),
-                        createElement("div",{"class":"mj-data-button-yes",domProps:{innerText:"确定"},on:{click:this._handleYes}})
-                    ])
-                ])
-            ]);
-    },
-    props:{
-        value:String,
-        type:{
-            type:String,
-            default:"date"
-        },
-        max:String,
-        min:String
-    },
-    data:function(){
-        return {
-            isHide:true,
-            year:"",
-            month:"",
-            day:"",
-            hour:"",
-            minute:"",
-            second:"",
-            date:null,
-            days:0,
-            weekDay:0,
-            currValue:"",
-            hsto:null,
-            msto:null,
-            ssto:null,
-            isTimeHide:true,
-            isYearHide:true,
-            isMonthHide:true,
-            yearList:[],
-            monthList:["一月","二月","三月","四月","五月","六月","七月","八月","九月","十月","十一月","十二月"],
-            isTop:false,
-            maxYear:-1,
-            maxMonth:-1,
-            maxDay:-1,
-            minYear:-1,
-            minMonth:-1,
-            minDay:-1
-        }
-    },
-    methods:{
-        addZero:function(num){
-            return num > 9 ? num : "0" + num;
-        },
-        checkMaxMonth:function(){
-            if(this.maxMonth !== -1 && this.maxMonth <= this.month){
-                this.month = this.maxMonth;
-                if(this.maxDay !== -1 && this.maxDay < this.day){
-                    this.day = this.maxDay;
-                }
-            }
-        },
-        checkMinMonth:function(){
-            if(this.minMonth !== -1 && this.minMonth >= this.month){
-                this.month = this.minMonth;
-                if(this.minDay !== -1 && this.minDay > this.day){
-                    this.day = this.minDay;
-                }
-            }
-        },
-        checkMaxDay:function(){
-            if(this.maxDay !== -1 && this.maxDay < this.day){
-                this.day = this.maxDay;
-            }
-        },
-        checkMinDay:function(){
-            if(this.minDay !== -1 && this.minDay > this.day){
-                this.day = this.minDay;
-            }
-        },
-        prevYear:function(){
-            if(!this.isYearHide){
-                if(this.yearList[0] > this.minYear){
-                    this._getYearList(this.yearList[0] - 10);
-                }
-            }else if(this.year > this.minYear){
-                this.year = +this.year - 1 + "";
-                this.checkMaxMonth();
-                this.checkMinMonth();
-            }
-        },
-        prevMonth:function(){
-            if(!this.isYearHide){
-                if(+this.year % 10 === 0){
-                    if(this.maxYear !== -1 && +this.year + 9 > this.maxYear){
-                        this.year = this.maxYear;
-                    }else{
-                        this.year = +this.year + 9 + "";
-                    }
-                }else{
-                    if(this.year > this.minYear){
-                        this.year = +this.year - 1 + "";
-                    }
-                }
-            }else if(!this.isMonthHide){
-                if(+this.month % 12 === 1){
-                    if(this.maxMonth != -1 && this.year === this.maxYear && +this.month + 11 > this.maxMonth){
-                        this.month = this.maxMonth;
-                    }else{
-                        this.month = this.addZero(+this.month + 11) + "";
-                    }
-                }else{
-                    if(this.year === this.minYear && this.month > this.minMonth){
-                        this.month = this.addZero(+this.month - 1) + "";
-                    }
-                }
-            }else if(this.minYear === -1 || this.minYear !== this.year || this.month > this.minMonth){
-                if(+this.month <= 1){
-                    this.year = +this.year - 1 + "";
-                    this.month = "12";
-                }else{
-                    this.month = this.addZero(+this.month - 1) + "";
-                }
-            }
-            this.checkMaxMonth();
-            this.checkMinMonth();
-        },
-        nextYear:function(){
-            if(!this.isYearHide){
-                if(this.maxYear === -1 || this.yearList[9] < this.maxYear){
-                    this._getYearList(this.yearList[0] + 10);
-                }
-            }else if(this.maxYear === -1 || this.year < this.maxYear){
-                this.year = +this.year + 1 + "";
-                this.checkMaxMonth();
-                this.checkMinMonth();
-            }
-        },
-        nextMonth:function(){
-            if(!this.isYearHide){
-                if(+this.year % 10 === 9){
-                    if(+this.year + 9 < this.minYear){
-                        this.year = this.minYear;
-                    }else{
-                        this.year = +this.year - 9 + "";
-                    }
-                }else if(this.maxYear === -1 || this.year < this.maxYear){
-                    this.year = +this.year + 1 + "";
-                }
-            }else if(!this.isMonthHide){
-                if(+this.month % 12 === 0){
-                    if(this.year !== this.minYear || +this.minMonth <= 1){
-                        this.month = this.addZero(+this.month - 11) + "";
-                    }else{
-                        this.month = this.minMonth;
-                    }
-                }else{
-                    if(this.year !== this.maxYear || +this.maxMonth > this.month){
-                        this.month = this.addZero(+this.month + 1) + "";
-                    }
-                }
-            }else if(this.maxYear === -1 || this.maxYear !== this.year || this.maxMonth === -1 || this.month < this.maxMonth){
-                if(+this.month >= 12){
-                    this.year = +this.year + 1 + "";
-                    this.month = "01";
-                }else{
-                    this.month = this.addZero(+this.month + 1) + "";
-                }
-            }
-            this.checkMaxMonth();
-            this.checkMinMonth();
-        },
-        _showYearList:function(){
-            if(this.type !== "year"){
-                this.isYearHide = !this.isYearHide;
-                if(this.type !== "month"){
-                    this.isMonthHide = true;
-                }
-            }
-        },
-        _showMonthList:function(){
-            if(this.type !== "month" && this.type !== "year"){
-                this.isMonthHide = !this.isMonthHide;
-                this.isYearHide = true;
-            }
-        },
-        _yearClick:function(e){
-            this.year = e.target.innerText;
-            if(this.type !== "year"){
-                this.isYearHide = true;
-            }
-            this.checkMaxMonth();
-            this.checkMinMonth();
-        },
-        _monthClick:function(e){
-            this.month = this.addZero(e.target.getAttribute("data-month"));
-            if(this.type !== "month"){
-                this.isMonthHide = true;
-            }
-            this.checkMaxDay();
-            this.checkMinDay();
-        },
-        _hideTimeList:function(){
-            this.isTimeHide = true;
-        },
-        _timeBlur:function(){
-            if(/^([0-1]\d|2[0-4])\:([0-5]\d|60)\:([0-5]\d|60)$/.test(this.$refs.timeIpt.value)){
-                var arr = this.$refs.timeIpt.value.split(":");
-                this.hour = arr[0];
-                this.minute = arr[1];
-                this.second = arr[2];
-            }
-        },
-        _timeClick:function(){
-            this.isTimeHide = !this.isTimeHide;
-            if(!this.isTimeHide){
-                var self = this;
-                setTimeout(function(){
-                    self.$refs.hourList.scrollTop = (+self.hour) * 32;
-                    self.$refs.minuteList.scrollTop = (+self.minute) * 32;
-                    self.$refs.secondList.scrollTop = (+self.second) * 32;
-                },100)
-            }
-        },
-        _hourScroll:function(e){
-            this.hour = this.addZero(Math.round(e.target.scrollTop / 32));
-            clearTimeout(this.hsto);
-            var self = this;
-            this.hsto = setTimeout(function(){
-                e.target.scrollTop = (+self.hour) * 32;
-            },300);
-        },
-        _minuteScroll:function(e){
-            this.minute = this.addZero(Math.round(e.target.scrollTop / 32));
-            clearTimeout(this.msto);
-            var self = this;
-            this.msto = setTimeout(function(){
-                e.target.scrollTop = (+self.minute) * 32;
-            },300);
-        },
-        _secondScroll:function(e){
-            this.second = this.addZero(Math.round(e.target.scrollTop / 32));
-            clearTimeout(this.ssto);
-            var self = this;
-            this.ssto = setTimeout(function(){
-                e.target.scrollTop = (+self.second) * 32;
-            },300);
-        },
-        _getValue:function(){
-            var str = "";
-            switch(this.type){
-                case "date":
-                    str = this.year + "-" + this.month + "-" + this.day;
-                    break;
-                case "time":
-                    str = this.year + "-" + this.month + "-" + this.day + " " + this.hour + ":" + this.minute + ":" + this.second;
-                    break;
-                case "year":
-                    str = this.year;
-                    break;
-                case "month":
-                    str = this.year + "-" + this.month;
-                    break;
-                default:
-                    str = this.year + "-" + this.month + "-" + this.day;
-                    break;
-            }
-            this.currValue = str;
-        },
-        _getDays:function(){
-            this.weekDay = new Date(this.year + "-" + this.month).getDay();
-            if(this.month === "02"){
-                if((this.year % 100 === 0 && this.year % 400 === 0) || (this.year % 100 !== 0 && this.year % 4 === 0)){
-                    this.days = 29;
-                    if(+this.day > 29){
-                        this.day = "29";
-                    }
-                }else{
-                    this.days = 28
-                    if(+this.day > 28){
-                        this.day = "28";
-                    }
-                }
-            }else{
-                if((+this.month < 8 && +this.month % 2 === 0) || (+this.month > 7 && +this.month % 2 === 1)){
-                    this.days = 30;
-                    if(+this.day > 30){
-                        this.day = "30";
-                    }
-                }else{
-                    this.days = 31;
-                }
-            }
-        },
-        _createValues:function(date){
-            this.year = date.getFullYear() + "";
-            this.month = this.addZero(date.getMonth() + 1) + "";
-            this.day = this.addZero(date.getDate()) + "";
-            this.hour = this.addZero(date.getHours()) + "";
-            this.minute = this.addZero(date.getMinutes()) + "";
-            this.second = this.addZero(date.getSeconds()) + "";
-            this._getDays();
-        },
-        _handleBlur:function(e){
-            this.currValue = e.target.value;
-            this.$emit("input",e.target.value);
-            if(this.currValue){
-                var d = new Date(this.currValue);
-            }else{
-                var d = new Date();
-            }
-            if(d != "Invalid Date"){
-                this.date = d;
-            }
-            this._createValues(this.date);
-        },
-        _handleClick:function(){
-            this.isHide = !this.isHide;
-        },
-        _clearClick:function(){
-            this.$emit("input","");
-        },
-        _handleYes:function(){
-            this.isHide = true;
-            this.$emit("input",this.currValue);
-        },
-        _handleCancle:function(){
-            this.isHide = true;
-        },
-        _selectDay:function(e){
-            this.day = this.addZero(+(e.target.innerText)) + "";
-            this._getValue();
-            if(this.type !== "time"){
-                this.isHide = true;
-                this.$emit("input",this.currValue);
-            }
-        },
-        _getYearList:function(year){
-            year = year || this.year;
-            var y = ~~(year / 10) * 10;
-            var arr = []
-            for(var i = 0;i < 10;i++){
-                arr[i] = y + i;
-            }
-            this.yearList = arr;
-        },
-        _domClick:function(e){
-            if(e.target !== this.$refs.datePicker && e.target !== this.$refs.input && e.target !== this.$refs.icon){
-                this.isHide = true;
-            }
-        },
-        _stopPropagationFun:function(e){
-            if(e && e.stopPropagation){
-                e.stopPropagation();
-            }else{
-                window.event.cancelBubble = true;
-            }
-        }
-    },
-    watch:{
-        value:function(){
-            this.currValue = this.value;
-            if(this.currValue){
-                var d = new Date(this.currValue);
-            }else{
-                var d = new Date();
-            }
-            if(d != "Invalid Date"){
-                this.date = d;
-            }
-            this._createValues(this.date);
-            this.$parent && this.$parent.validate && this.$parent.validate(null,"change");
-            this.$emit("change")
-        },
-        year:function(){
-            this._getValue();
-            this._getYearList();
-            this._getDays();
-        },
-        month:function(){
-            this._getValue();
-            this._getDays();
-        },
-        hour:function(){
-            this._getValue();
-        },
-        minute:function(){
-            this._getValue();
-        },
-        second:function(){
-            this._getValue();
-        },
-        max:function(){
-            if(this.max !== "" && /^\d{4}(\-(0\d|1[0|1|2])(\-([0|1|2]\d|(30|31)))?)?$/.test(this.max)){
-                this.maxYear = this.max.substr(0,4);
-                if(this.max.length >= 7){
-                    this.maxMonth = this.max.substr(5,2);
-                }
-                if(this.max.length === 10){
-                    this.maxDay = this.max.substr(8,2);
-                }
-            }else{
-                this.maxYear = -1;
-                this.maxMonth = -1;
-                this.maxDay = -1;
-            }
-        },
-        min:function(){
-            if(this.min !== "" && /^\d{4}(\-(0\d|1[0|1|2])(\-([0|1|2]\d|(30|31)))?)?$/.test(this.min)){
-                this.minYear = this.min.substr(0,4);
-                if(this.min.length >= 7){
-                    this.minMonth = this.min.substr(5,2);
-                }
-                if(this.min.length === 10){
-                    this.minDay = this.min.substr(8,2);
-                }
-            }else{
-                this.minYear = -1;
-                this.minMonth = -1;
-                this.minDay = -1;
-            }
-        },
-        isTimeHide:function(){
-            if(/^([0-1]\d|2[0-4])\:([0-5]\d|60)\:([0-5]\d|60)$/.test(this.$refs.timeIpt.value)){
-                var arr = this.$refs.timeIpt.value.split(":");
-                this.hour = arr[0];
-                this.minute = arr[1];
-                this.second = arr[2];
-            }
-        }
-    },
-    created:function(){
-        this.currValue = this.value;
-        if(this.value){
-            this.date = new Date(this.value);
-        }else{
-            this.date = new Date();
-        }
-        if(this.date == "Invalid Date"){
-            this.date = new Date();
-        }
-        this.year = this.date.getFullYear() + "";
-        this.month = this.addZero(this.date.getMonth() + 1) + "";
-        this.day = this.addZero(this.date.getDate()) + "";
-        this.hour = this.addZero(this.date.getHours()) + "";
-        this.minute = this.addZero(this.date.getMinutes()) + "";
-        this.second = this.addZero(this.date.getSeconds()) + "";
-        this.weekDay = new Date(this.year + "-" + this.month).getDay();
-        this._getDays();
-        this._getYearList();
-        if(this.type === "month"){
-            this.isMonthHide = false;
-        }
-        if(this.type === "year"){
-            this.isYearHide = false;
-        }
-        if(this.max !== "" && /^\d{4}(\-(0\d|1[0|1|2])(\-([0|1|2]\d|(30|31)))?)?$/.test(this.max)){
-            this.maxYear = this.max.substr(0,4);
-            if(this.max.length >= 7){
-                this.maxMonth = this.max.substr(5,2);
-            }
-            if(this.max.length === 10){
-                this.maxDay = this.max.substr(8,2);
-            }
-        }
-        if(this.min !== "" && /^\d{4}(\-(0\d|1[0|1|2])(\-([0|1|2]\d|(30|31)))?)?$/.test(this.min)){
-            this.minYear = this.min.substr(0,4);
-            if(this.min.length >= 7){
-                this.minMonth = this.min.substr(5,2);
-            }
-            if(this.min.length === 10){
-                this.minDay = this.min.substr(8,2);
-            }
-        }
-    },
-    mounted:function(){
-        document.addEventListener("click",this._domClick);
-        if(window.innerHeight - this.$refs.datePicker.getBoundingClientRect().bottom <= 300){
-            this.isTop = true;
-        }
-    }
-})
+// Vue.component("mj-data-picker",{
+//     render:function(createElement){
+//         var list = [];
+//         var weekText = ["日","一","二","三","四","五","六"];
+//         for(var i = 0;i < 7;i++){
+//             list[i] = createElement("dl",{domProps:{innerText:weekText[i]}})
+//         }
+//         for(var i = 0;i < this.weekDay;i++){
+//             list[i + 7] = createElement("dl")
+//         }
+//         for(var i = 0;i < this.days;i++){
+//             var disabledDayFlag = this.year === this.minYear && this.month === this.minMonth && i + 1 < this.minDay || (this.year === this.maxYear && this.month === this.maxMonth && this.maxDay !== -1 && i + 1 > this.maxDay);
+//             list[i + 7 + this.weekDay] = createElement("dl",{"class":{"mj-data-current":+this.day === (i + 1),"mj-data-day":true,"mj-data-disabled":disabledDayFlag},domProps:{innerText:this.addZero(i + 1)},on:{click:disabledDayFlag ? function(){} : this._selectDay}})
+//         }
+//         var yearText = [];
+//         yearText[0] = createElement("span",{domProps:{innerText:this.year + "年"},on:{click:this._showYearList}});
+//         if(this.type !== "year"){
+//             yearText[1] = createElement("span",{domProps:{innerText:this.month + "月"},on:{click:this._showMonthList}});
+//         }
+//         if(this.type === "time"){
+//             var hourList = [];
+//             var minuteList = [];
+//             var secondList = [];
+//             hourList[0] = createElement("li");
+//             hourList[1] = createElement("li");
+//             minuteList[0] = createElement("li");
+//             minuteList[1] = createElement("li");
+//             secondList[0] = createElement("li");
+//             secondList[1] = createElement("li");
+//             for(var i = 0;i < 60;i++){
+//                 if(i < 24){
+//                     hourList[i + 2] = createElement("li",{"class":{"mj-currtime":this.hour === this.addZero(i)},domProps:{innerText:this.addZero(i)}});
+//                 }
+//                 minuteList[i + 2] = createElement("li",{"class":{"mj-currtime":this.minute === this.addZero(i)},domProps:{innerText:this.addZero(i)}});
+//                 secondList[i + 2] = createElement("li",{"class":{"mj-currtime":this.second === this.addZero(i)},domProps:{innerText:this.addZero(i)}});
+//             }
+//             hourList[hourList.length] = createElement("li");
+//             hourList[hourList.length] = createElement("li");
+//             minuteList[minuteList.length] = createElement("li");
+//             minuteList[minuteList.length] = createElement("li");
+//             secondList[secondList.length] = createElement("li");
+//             secondList[secondList.length] = createElement("li");
+//             var times = createElement("div",{"class":"mj-data-times"},[
+//                 createElement("input",{domProps:{value:this.year + "-" + this.month + "-" + this.day}}),
+//                 createElement("input",{domProps:{value:this.hour + ":" + this.minute + ":" + this.second},on:{click:this._timeClick,blur:this._timeBlur},ref:"timeIpt"}),
+//                 createElement("div",{"class":{"mj-data-times-main":true,"hidden":this.isTimeHide}},[
+//                     createElement("div",{"class":"mj-data-times-list"},[
+//                         createElement("div",[
+//                             createElement("div",{on:{scroll:this._hourScroll},ref:"hourList"},[
+//                                 createElement("ul",hourList)
+//                             ]),
+//                         ]),
+//                         createElement("div",[
+//                             createElement("div",{on:{scroll:this._minuteScroll},ref:"minuteList"},[
+//                                 createElement("ul",minuteList)
+//                             ]),
+//                         ]),
+//                         createElement("div",[
+//                             createElement("div",{on:{scroll:this._secondScroll},ref:"secondList"},[
+//                                 createElement("ul",secondList)
+//                             ])
+//                         ]),
+//                     ]),
+//                     createElement("div",{"class":"mj-data-times-btns"},[
+//                         createElement("div",{domProps:{innerText:"确定"},on:{click:this._hideTimeList}})
+//                     ])
+//                 ])
+//             ]);
+//         }else{
+//             var times = [];
+//         }
+//         var yeardls = [];
+//         for(var i = 0;i < 10;i++){
+//             var disabledYearFlag = this.maxYear !== -1 && this.maxYear < this.yearList[i] || this.yearList[i] < this.minYear;
+//             yeardls[i] = createElement("dl",{"class":{"currYear":this.yearList[i] === +this.year,"disabledYear":disabledYearFlag},domProps:{innerText:this.yearList[i]},on:{click:disabledYearFlag ? function(){} : this._yearClick}})
+//         }
+//         var monthdls = [];
+//         for(var i = 0;i < 12;i++){
+//             var disabledMonthFlag = this.maxYear === this.year && this.maxMonth < (i + 1) || (this.minYear === this.year && this.minMonth > (i + 1));
+//             monthdls[i] = createElement("dl",{"class":{"currYear":(i + 1) === +this.month,"disabledYear":disabledMonthFlag},domProps:{innerText:this.monthList[i]},on:{click:disabledMonthFlag ? function(){} : this._monthClick},attrs:{"data-month":i + 1}})
+//         }
+//         return createElement("div",{"class":"mj-data-picker",ref:"datePicker"},[
+//                 createElement("input",{"class":"mj-data-input",attrs:{value:this.value,readonly:true},on:{blur:this._handleBlur,click:this._handleClick},ref:"input"}),
+//                 createElement("i",{"class":"mj-data-icon",on:{click:this._clearClick},ref:"icon"}),
+//                 createElement("div",{"class":{"mj-data-main":true,"mj-data-main-bottom":!this.isTop,"hidden":this.isHide,"mj-data-main-top":this.isTop},on:{click:this._stopPropagationFun}},[
+//                     times,
+//                     createElement("div",{"class":"mj-data-years"},[
+//                         createElement("div",{"class":"mj-data-years-btn mj-data-prev-year",on:{click:this.prevYear}},[
+//                             createElement("i",{"class":"mj-data-prev"}),
+//                             createElement("i",{"class":"mj-data-prev"})
+//                         ]),
+//                         createElement("div",{"class":"mj-data-years-btn mj-data-prev-month",on:{click:this.prevMonth}},[
+//                             createElement("i",{"class":"mj-data-prev"})
+//                         ]),
+//                         createElement("div",{"class":"mj-data-years-text"},yearText),
+//                         createElement("div",{"class":"mj-data-years-btn mj-data-next-month",on:{click:this.nextMonth}},[
+//                             createElement("i",{"class":"mj-data-next"})
+//                         ]),
+//                         createElement("div",{"class":"mj-data-years-btn mj-data-next-year",on:{click:this.nextYear}},[
+//                             createElement("i",{"class":"mj-data-next"}),
+//                             createElement("i",{"class":"mj-data-next"})
+//                         ]),
+//                         createElement("div",{"class":{"mj-data-yearList":true,"hidden":this.isMonthHide}},monthdls),
+//                         createElement("div",{"class":{"mj-data-yearList":true,"hidden":this.isYearHide}},yeardls)
+//                     ]),
+//                     createElement("div",{"class":"mj-data-list"},list),
+//                     createElement("div",{"class":"mj-data-button"},[
+//                         createElement("div",{"class":"mj-data-button-cancle",domProps:{innerText:"取消"},on:{click:this._handleCancle}}),
+//                         createElement("div",{"class":"mj-data-button-yes",domProps:{innerText:"确定"},on:{click:this._handleYes}})
+//                     ])
+//                 ])
+//             ]);
+//     },
+//     props:{
+//         value:String,
+//         type:{
+//             type:String,
+//             default:"date"
+//         },
+//         max:String,
+//         min:String
+//     },
+//     data:function(){
+//         return {
+//             isHide:true,
+//             year:"",
+//             month:"",
+//             day:"",
+//             hour:"",
+//             minute:"",
+//             second:"",
+//             date:null,
+//             days:0,
+//             weekDay:0,
+//             currValue:"",
+//             hsto:null,
+//             msto:null,
+//             ssto:null,
+//             isTimeHide:true,
+//             isYearHide:true,
+//             isMonthHide:true,
+//             yearList:[],
+//             monthList:["一月","二月","三月","四月","五月","六月","七月","八月","九月","十月","十一月","十二月"],
+//             isTop:false,
+//             maxYear:-1,
+//             maxMonth:-1,
+//             maxDay:-1,
+//             minYear:-1,
+//             minMonth:-1,
+//             minDay:-1
+//         }
+//     },
+//     methods:{
+//         addZero:function(num){
+//             return num > 9 ? num : "0" + num;
+//         },
+//         checkMaxMonth:function(){
+//             if(this.maxMonth !== -1 && this.maxMonth <= this.month){
+//                 this.month = this.maxMonth;
+//                 if(this.maxDay !== -1 && this.maxDay < this.day){
+//                     this.day = this.maxDay;
+//                 }
+//             }
+//         },
+//         checkMinMonth:function(){
+//             if(this.minMonth !== -1 && this.minMonth >= this.month){
+//                 this.month = this.minMonth;
+//                 if(this.minDay !== -1 && this.minDay > this.day){
+//                     this.day = this.minDay;
+//                 }
+//             }
+//         },
+//         checkMaxDay:function(){
+//             if(this.maxDay !== -1 && this.maxDay < this.day){
+//                 this.day = this.maxDay;
+//             }
+//         },
+//         checkMinDay:function(){
+//             if(this.minDay !== -1 && this.minDay > this.day){
+//                 this.day = this.minDay;
+//             }
+//         },
+//         prevYear:function(){
+//             if(!this.isYearHide){
+//                 if(this.yearList[0] > this.minYear){
+//                     this._getYearList(this.yearList[0] - 10);
+//                 }
+//             }else if(this.year > this.minYear){
+//                 this.year = +this.year - 1 + "";
+//                 this.checkMaxMonth();
+//                 this.checkMinMonth();
+//             }
+//         },
+//         prevMonth:function(){
+//             if(!this.isYearHide){
+//                 if(+this.year % 10 === 0){
+//                     if(this.maxYear !== -1 && +this.year + 9 > this.maxYear){
+//                         this.year = this.maxYear;
+//                     }else{
+//                         this.year = +this.year + 9 + "";
+//                     }
+//                 }else{
+//                     if(this.year > this.minYear){
+//                         this.year = +this.year - 1 + "";
+//                     }
+//                 }
+//             }else if(!this.isMonthHide){
+//                 if(+this.month % 12 === 1){
+//                     if(this.maxMonth != -1 && this.year === this.maxYear && +this.month + 11 > this.maxMonth){
+//                         this.month = this.maxMonth;
+//                     }else{
+//                         this.month = this.addZero(+this.month + 11) + "";
+//                     }
+//                 }else{
+//                     if(this.year === this.minYear && this.month > this.minMonth){
+//                         this.month = this.addZero(+this.month - 1) + "";
+//                     }
+//                 }
+//             }else if(this.minYear === -1 || this.minYear !== this.year || this.month > this.minMonth){
+//                 if(+this.month <= 1){
+//                     this.year = +this.year - 1 + "";
+//                     this.month = "12";
+//                 }else{
+//                     this.month = this.addZero(+this.month - 1) + "";
+//                 }
+//             }
+//             this.checkMaxMonth();
+//             this.checkMinMonth();
+//         },
+//         nextYear:function(){
+//             if(!this.isYearHide){
+//                 if(this.maxYear === -1 || this.yearList[9] < this.maxYear){
+//                     this._getYearList(this.yearList[0] + 10);
+//                 }
+//             }else if(this.maxYear === -1 || this.year < this.maxYear){
+//                 this.year = +this.year + 1 + "";
+//                 this.checkMaxMonth();
+//                 this.checkMinMonth();
+//             }
+//         },
+//         nextMonth:function(){
+//             if(!this.isYearHide){
+//                 if(+this.year % 10 === 9){
+//                     if(+this.year + 9 < this.minYear){
+//                         this.year = this.minYear;
+//                     }else{
+//                         this.year = +this.year - 9 + "";
+//                     }
+//                 }else if(this.maxYear === -1 || this.year < this.maxYear){
+//                     this.year = +this.year + 1 + "";
+//                 }
+//             }else if(!this.isMonthHide){
+//                 if(+this.month % 12 === 0){
+//                     if(this.year !== this.minYear || +this.minMonth <= 1){
+//                         this.month = this.addZero(+this.month - 11) + "";
+//                     }else{
+//                         this.month = this.minMonth;
+//                     }
+//                 }else{
+//                     if(this.year !== this.maxYear || +this.maxMonth > this.month){
+//                         this.month = this.addZero(+this.month + 1) + "";
+//                     }
+//                 }
+//             }else if(this.maxYear === -1 || this.maxYear !== this.year || this.maxMonth === -1 || this.month < this.maxMonth){
+//                 if(+this.month >= 12){
+//                     this.year = +this.year + 1 + "";
+//                     this.month = "01";
+//                 }else{
+//                     this.month = this.addZero(+this.month + 1) + "";
+//                 }
+//             }
+//             this.checkMaxMonth();
+//             this.checkMinMonth();
+//         },
+//         _showYearList:function(){
+//             if(this.type !== "year"){
+//                 this.isYearHide = !this.isYearHide;
+//                 if(this.type !== "month"){
+//                     this.isMonthHide = true;
+//                 }
+//             }
+//         },
+//         _showMonthList:function(){
+//             if(this.type !== "month" && this.type !== "year"){
+//                 this.isMonthHide = !this.isMonthHide;
+//                 this.isYearHide = true;
+//             }
+//         },
+//         _yearClick:function(e){
+//             this.year = e.target.innerText;
+//             if(this.type !== "year"){
+//                 this.isYearHide = true;
+//             }
+//             this.checkMaxMonth();
+//             this.checkMinMonth();
+//         },
+//         _monthClick:function(e){
+//             this.month = this.addZero(e.target.getAttribute("data-month"));
+//             if(this.type !== "month"){
+//                 this.isMonthHide = true;
+//             }
+//             this.checkMaxDay();
+//             this.checkMinDay();
+//         },
+//         _hideTimeList:function(){
+//             this.isTimeHide = true;
+//         },
+//         _timeBlur:function(){
+//             if(/^([0-1]\d|2[0-4])\:([0-5]\d|60)\:([0-5]\d|60)$/.test(this.$refs.timeIpt.value)){
+//                 var arr = this.$refs.timeIpt.value.split(":");
+//                 this.hour = arr[0];
+//                 this.minute = arr[1];
+//                 this.second = arr[2];
+//             }
+//         },
+//         _timeClick:function(){
+//             this.isTimeHide = !this.isTimeHide;
+//             if(!this.isTimeHide){
+//                 var self = this;
+//                 setTimeout(function(){
+//                     self.$refs.hourList.scrollTop = (+self.hour) * 32;
+//                     self.$refs.minuteList.scrollTop = (+self.minute) * 32;
+//                     self.$refs.secondList.scrollTop = (+self.second) * 32;
+//                 },100)
+//             }
+//         },
+//         _hourScroll:function(e){
+//             this.hour = this.addZero(Math.round(e.target.scrollTop / 32));
+//             clearTimeout(this.hsto);
+//             var self = this;
+//             this.hsto = setTimeout(function(){
+//                 e.target.scrollTop = (+self.hour) * 32;
+//             },300);
+//         },
+//         _minuteScroll:function(e){
+//             this.minute = this.addZero(Math.round(e.target.scrollTop / 32));
+//             clearTimeout(this.msto);
+//             var self = this;
+//             this.msto = setTimeout(function(){
+//                 e.target.scrollTop = (+self.minute) * 32;
+//             },300);
+//         },
+//         _secondScroll:function(e){
+//             this.second = this.addZero(Math.round(e.target.scrollTop / 32));
+//             clearTimeout(this.ssto);
+//             var self = this;
+//             this.ssto = setTimeout(function(){
+//                 e.target.scrollTop = (+self.second) * 32;
+//             },300);
+//         },
+//         _getValue:function(){
+//             var str = "";
+//             switch(this.type){
+//                 case "date":
+//                     str = this.year + "-" + this.month + "-" + this.day;
+//                     break;
+//                 case "time":
+//                     str = this.year + "-" + this.month + "-" + this.day + " " + this.hour + ":" + this.minute + ":" + this.second;
+//                     break;
+//                 case "year":
+//                     str = this.year;
+//                     break;
+//                 case "month":
+//                     str = this.year + "-" + this.month;
+//                     break;
+//                 default:
+//                     str = this.year + "-" + this.month + "-" + this.day;
+//                     break;
+//             }
+//             this.currValue = str;
+//         },
+//         _getDays:function(){
+//             this.weekDay = new Date(this.year + "-" + this.month).getDay();
+//             if(this.month === "02"){
+//                 if((this.year % 100 === 0 && this.year % 400 === 0) || (this.year % 100 !== 0 && this.year % 4 === 0)){
+//                     this.days = 29;
+//                     if(+this.day > 29){
+//                         this.day = "29";
+//                     }
+//                 }else{
+//                     this.days = 28
+//                     if(+this.day > 28){
+//                         this.day = "28";
+//                     }
+//                 }
+//             }else{
+//                 if((+this.month < 8 && +this.month % 2 === 0) || (+this.month > 7 && +this.month % 2 === 1)){
+//                     this.days = 30;
+//                     if(+this.day > 30){
+//                         this.day = "30";
+//                     }
+//                 }else{
+//                     this.days = 31;
+//                 }
+//             }
+//         },
+//         _createValues:function(date){
+//             this.year = date.getFullYear() + "";
+//             this.month = this.addZero(date.getMonth() + 1) + "";
+//             this.day = this.addZero(date.getDate()) + "";
+//             this.hour = this.addZero(date.getHours()) + "";
+//             this.minute = this.addZero(date.getMinutes()) + "";
+//             this.second = this.addZero(date.getSeconds()) + "";
+//             this._getDays();
+//         },
+//         _handleBlur:function(e){
+//             this.currValue = e.target.value;
+//             this.$emit("input",e.target.value);
+//             if(this.currValue){
+//                 var d = new Date(this.currValue);
+//             }else{
+//                 var d = new Date();
+//             }
+//             if(d != "Invalid Date"){
+//                 this.date = d;
+//             }
+//             this._createValues(this.date);
+//         },
+//         _handleClick:function(){
+//             this.isHide = !this.isHide;
+//         },
+//         _clearClick:function(){
+//             this.$emit("input","");
+//         },
+//         _handleYes:function(){
+//             this.isHide = true;
+//             this.$emit("input",this.currValue);
+//         },
+//         _handleCancle:function(){
+//             this.isHide = true;
+//         },
+//         _selectDay:function(e){
+//             this.day = this.addZero(+(e.target.innerText)) + "";
+//             this._getValue();
+//             if(this.type !== "time"){
+//                 this.isHide = true;
+//                 this.$emit("input",this.currValue);
+//             }
+//         },
+//         _getYearList:function(year){
+//             year = year || this.year;
+//             var y = ~~(year / 10) * 10;
+//             var arr = []
+//             for(var i = 0;i < 10;i++){
+//                 arr[i] = y + i;
+//             }
+//             this.yearList = arr;
+//         },
+//         _domClick:function(e){
+//             if(e.target !== this.$refs.datePicker && e.target !== this.$refs.input && e.target !== this.$refs.icon){
+//                 this.isHide = true;
+//             }
+//         },
+//         _stopPropagationFun:function(e){
+//             if(e && e.stopPropagation){
+//                 e.stopPropagation();
+//             }else{
+//                 window.event.cancelBubble = true;
+//             }
+//         }
+//     },
+//     watch:{
+//         value:function(){
+//             this.currValue = this.value;
+//             if(this.currValue){
+//                 var d = new Date(this.currValue);
+//             }else{
+//                 var d = new Date();
+//             }
+//             if(d != "Invalid Date"){
+//                 this.date = d;
+//             }
+//             this._createValues(this.date);
+//             this.$parent && this.$parent.validate && this.$parent.validate(null,"change");
+//             this.$emit("change")
+//         },
+//         year:function(){
+//             this._getValue();
+//             this._getYearList();
+//             this._getDays();
+//         },
+//         month:function(){
+//             this._getValue();
+//             this._getDays();
+//         },
+//         hour:function(){
+//             this._getValue();
+//         },
+//         minute:function(){
+//             this._getValue();
+//         },
+//         second:function(){
+//             this._getValue();
+//         },
+//         max:function(){
+//             if(this.max !== "" && /^\d{4}(\-(0\d|1[0|1|2])(\-([0|1|2]\d|(30|31)))?)?$/.test(this.max)){
+//                 this.maxYear = this.max.substr(0,4);
+//                 if(this.max.length >= 7){
+//                     this.maxMonth = this.max.substr(5,2);
+//                 }
+//                 if(this.max.length === 10){
+//                     this.maxDay = this.max.substr(8,2);
+//                 }
+//             }else{
+//                 this.maxYear = -1;
+//                 this.maxMonth = -1;
+//                 this.maxDay = -1;
+//             }
+//         },
+//         min:function(){
+//             if(this.min !== "" && /^\d{4}(\-(0\d|1[0|1|2])(\-([0|1|2]\d|(30|31)))?)?$/.test(this.min)){
+//                 this.minYear = this.min.substr(0,4);
+//                 if(this.min.length >= 7){
+//                     this.minMonth = this.min.substr(5,2);
+//                 }
+//                 if(this.min.length === 10){
+//                     this.minDay = this.min.substr(8,2);
+//                 }
+//             }else{
+//                 this.minYear = -1;
+//                 this.minMonth = -1;
+//                 this.minDay = -1;
+//             }
+//         },
+//         isTimeHide:function(){
+//             if(/^([0-1]\d|2[0-4])\:([0-5]\d|60)\:([0-5]\d|60)$/.test(this.$refs.timeIpt.value)){
+//                 var arr = this.$refs.timeIpt.value.split(":");
+//                 this.hour = arr[0];
+//                 this.minute = arr[1];
+//                 this.second = arr[2];
+//             }
+//         }
+//     },
+//     created:function(){
+//         this.currValue = this.value;
+//         if(this.value){
+//             this.date = new Date(this.value);
+//         }else{
+//             this.date = new Date();
+//         }
+//         if(this.date == "Invalid Date"){
+//             this.date = new Date();
+//         }
+//         this.year = this.date.getFullYear() + "";
+//         this.month = this.addZero(this.date.getMonth() + 1) + "";
+//         this.day = this.addZero(this.date.getDate()) + "";
+//         this.hour = this.addZero(this.date.getHours()) + "";
+//         this.minute = this.addZero(this.date.getMinutes()) + "";
+//         this.second = this.addZero(this.date.getSeconds()) + "";
+//         this.weekDay = new Date(this.year + "-" + this.month).getDay();
+//         this._getDays();
+//         this._getYearList();
+//         if(this.type === "month"){
+//             this.isMonthHide = false;
+//         }
+//         if(this.type === "year"){
+//             this.isYearHide = false;
+//         }
+//         if(this.max !== "" && /^\d{4}(\-(0\d|1[0|1|2])(\-([0|1|2]\d|(30|31)))?)?$/.test(this.max)){
+//             this.maxYear = this.max.substr(0,4);
+//             if(this.max.length >= 7){
+//                 this.maxMonth = this.max.substr(5,2);
+//             }
+//             if(this.max.length === 10){
+//                 this.maxDay = this.max.substr(8,2);
+//             }
+//         }
+//         if(this.min !== "" && /^\d{4}(\-(0\d|1[0|1|2])(\-([0|1|2]\d|(30|31)))?)?$/.test(this.min)){
+//             this.minYear = this.min.substr(0,4);
+//             if(this.min.length >= 7){
+//                 this.minMonth = this.min.substr(5,2);
+//             }
+//             if(this.min.length === 10){
+//                 this.minDay = this.min.substr(8,2);
+//             }
+//         }
+//     },
+//     mounted:function(){
+//         document.addEventListener("click",this._domClick);
+//         if(window.innerHeight - this.$refs.datePicker.getBoundingClientRect().bottom <= 300){
+//             this.isTop = true;
+//         }
+//     }
+// })
 //树
 Vue.component("mj-tree-column",{
     render:function(createElement){

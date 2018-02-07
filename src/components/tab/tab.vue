@@ -1,20 +1,3 @@
-<!-- Vue.component("mj-tabs",{
-    render:function(createElement){
-        var titles = [];
-        var contents = [];
-        for(var i = 0,len = this.$slots.default.length;i < len;i++){
-            if(this.$slots.default[i] && this.$slots.default[i].tag && /^vue-component-\d*-mj-tab-panel$/.test(this.$slots.default[i].tag)){
-                var title = this.$slots.default[i].componentOptions.propsData.title || "标题";
-                titles[titles.length] = createElement("dl",{domProps:{innerText:title},"class":{"curr":titles.length === this.currIndex},on:{click:this.selectTab(titles.length)}});
-                contents[contents.length] = createElement("div",{"class":{"hidden":contents.length !== this.currIndex}},[this.$slots.default[i]]);
-            }
-        }
-        return createElement("div",{"class":"mj-tabs"},[
-            createElement("div",{"class":"mj-tabs-titles"},titles),
-            createElement("div",{"class":"mj-tabs-panels"},contents),
-        ])
-    },
-}) -->
 <style></style>
 <template>
     <div class="mj-tabs" ref="tab">

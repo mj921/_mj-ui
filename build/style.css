@@ -895,6 +895,7 @@ body.body-dialog{
     border-bottom:1px solid #e7e9f3;
 }
 .mj-data-picker .mj-data-times>input{
+    float: left;
     display: inline-block;
     padding: 6px 10px;
     width: 106px;
@@ -927,6 +928,7 @@ body.body-dialog{
     border-bottom: 1px solid #e7e9f3;
 }
 .mj-data-picker .mj-data-times .mj-data-times-main .mj-data-times-list>div{
+    float: left;
     width: 40px;
     height: 100%;
     display: inline-block;
@@ -946,6 +948,7 @@ body.body-dialog{
     height: 32px;
     text-align: center;
     line-height: 32px;
+    cursor: pointer;
 }
 .mj-data-picker .mj-data-times .mj-data-times-main .mj-data-times-list ul li.mj-currtime{
     background-color: #2283ef;
@@ -982,6 +985,7 @@ body.body-dialog{
     line-height: normal;
 }
 .mj-data-picker .mj-data-main .mj-data-years .mj-data-years-btn{
+    float: left;
     display: inline-block;
     width: 12px;
     padding: 0 6px;
@@ -1030,6 +1034,7 @@ body.body-dialog{
     border-right-width:0; 
 }
 .mj-data-picker .mj-data-main .mj-data-years .mj-data-years-text{
+    float: left;
     display: inline-block;
     width: 128px;
     text-align: center;
@@ -1075,9 +1080,11 @@ body.body-dialog{
     height: 224px;
 }
 .mj-data-picker .mj-data-main .mj-data-list dl{
+    float: left;
     padding: 8px;
     width: 16px;
     display: inline-block;
+    height: 16px;
     line-height: 16px;
     text-align: center;
     background-color: #fff;

@@ -9,3 +9,6 @@ module.exports.objCopy = function(obj){
     }
     return o;
 } 
+module.exports.addZero = function(n){
+    return n < 10 ? "0" + n : n + "";
+}

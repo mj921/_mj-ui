@@ -3,6 +3,7 @@ import Button from "./components/button/button.vue";
 import Checkbox from "./components/checkbox/checkbox.vue";
 import CheckboxGroup from "./components/checkbox/checkbox-group.vue";
 import Col from "./components/col/col.vue";
+import DatePicker from "./components/datePicker/date-picker.vue";
 import Dialog from "./components/dialog/dialog.vue";
 import Form from "./components/form/form.vue";
 import FormItem from "./components/form/form-item.vue";
@@ -25,6 +26,7 @@ const components = [
     Checkbox,
     CheckboxGroup,
     Col,
+    DatePicker,
     Dialog,
     Form,
     FormItem,
@@ -47,9 +49,10 @@ const install = function(Vue,options){
     components.map(component => Vue.component(component.name,component))
 }
 if (typeof window !== 'undefined' && window.Vue) { 
-    for(var i = 0,len = components.length;i < len;i++){
-        install(window.Vue);
-    } 
+    install(window.Vue);
+    window.Vue.directive("mjscrolltop",function(el,binding){
+        el.scrollTop = binding.value;
+    })
 }
 
 module.exports = {
@@ -57,6 +60,7 @@ module.exports = {
     Checkbox,
     CheckboxGroup,
     Col,
+    DatePicker,
     Dialog,
     Form,
     FormItem,

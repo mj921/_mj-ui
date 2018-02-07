@@ -11,7 +11,6 @@ vue ui组件
 
 ```<script src="vue.js"></script>
 
-
 <script src="mj-ui.js"></script>```
 
 

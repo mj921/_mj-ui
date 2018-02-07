@@ -2083,47 +2083,47 @@ Vue.component("mj-tree",{
 //     }
 // })
 //标签页
-Vue.component("mj-tab-panel",{
-    render:function(createElement){
-        return createElement("div",this.$slots.default);
-    },
-    props:{
-        title:{
-            type:String,
-            default:"标题"
-        }
-    }
-})
-Vue.component("mj-tabs",{
-    render:function(createElement){
-        var titles = [];
-        var contents = [];
-        for(var i = 0,len = this.$slots.default.length;i < len;i++){
-            if(this.$slots.default[i] && this.$slots.default[i].tag && /^vue-component-\d*-mj-tab-panel$/.test(this.$slots.default[i].tag)){
-                var title = this.$slots.default[i].componentOptions.propsData.title || "标题";
-                titles[titles.length] = createElement("dl",{domProps:{innerText:title},"class":{"curr":titles.length === this.currIndex},on:{click:this.selectTab(titles.length)}});
-                contents[contents.length] = createElement("div",{"class":{"hidden":contents.length !== this.currIndex}},[this.$slots.default[i]]);
-            }
-        }
-        return createElement("div",{"class":"mj-tabs"},[
-            createElement("div",{"class":"mj-tabs-titles"},titles),
-            createElement("div",{"class":"mj-tabs-panels"},contents),
-        ])
-    },
-    data:function(){
-        return {
-            currIndex:0
-        }
-    },
-    methods:{
-        selectTab:function(n){
-            var self = this;
-            return function(){
-                self.currIndex = n;
-            }
-        }
-    },
-})
+// Vue.component("mj-tab-panel",{
+//     render:function(createElement){
+//         return createElement("div",this.$slots.default);
+//     },
+//     props:{
+//         title:{
+//             type:String,
+//             default:"标题"
+//         }
+//     }
+// })
+// Vue.component("mj-tabs",{
+//     render:function(createElement){
+//         var titles = [];
+//         var contents = [];
+//         for(var i = 0,len = this.$slots.default.length;i < len;i++){
+//             if(this.$slots.default[i] && this.$slots.default[i].tag && /^vue-component-\d*-mj-tab-panel$/.test(this.$slots.default[i].tag)){
+//                 var title = this.$slots.default[i].componentOptions.propsData.title || "标题";
+//                 titles[titles.length] = createElement("dl",{domProps:{innerText:title},"class":{"curr":titles.length === this.currIndex},on:{click:this.selectTab(titles.length)}});
+//                 contents[contents.length] = createElement("div",{"class":{"hidden":contents.length !== this.currIndex}},[this.$slots.default[i]]);
+//             }
+//         }
+//         return createElement("div",{"class":"mj-tabs"},[
+//             createElement("div",{"class":"mj-tabs-titles"},titles),
+//             createElement("div",{"class":"mj-tabs-panels"},contents),
+//         ])
+//     },
+//     data:function(){
+//         return {
+//             currIndex:0
+//         }
+//     },
+//     methods:{
+//         selectTab:function(n){
+//             var self = this;
+//             return function(){
+//                 self.currIndex = n;
+//             }
+//         }
+//     },
+// })
 //消息弹框
 var MjMessage = Vue.extend({
     template:"<div :class='\"mj-message mj-message-\" + type'><p>{{message}}</p></div>",

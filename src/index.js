@@ -14,8 +14,10 @@ import RadioItem from "./components/radio/radio-item.vue";
 import Row from "./components/row/row.vue";
 import Select from "./components/select/select.vue";
 import SelectItem from "./components/select/select-item.vue";
+import Tab from "./components/tab/tab.vue";
 import Table from "./components/table/table.vue";
 import TableColumn from "./components/table/table-column.vue";
+import TabPanel from "./components/tab/tab-panel.vue";
 import Textarea from "./components/textarea/textarea.vue";
 
 const components = [
@@ -34,8 +36,10 @@ const components = [
     Row,
     Select,
     SelectItem,
+    Tab,
     Table,
     TableColumn,
+    TabPanel,
     Textarea
 ]
 
@@ -64,7 +68,9 @@ module.exports = {
     Row,
     Select,
     SelectItem,
+    Tab,
     Table,
     TableColumn,
+    TabPanel,
     Textarea
 }

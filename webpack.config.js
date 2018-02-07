@@ -4,7 +4,7 @@ var webpack = require('webpack');
 module.exports = {
     entry:path.join(__dirname,"./src/index.js"),
     output:{
-        filename:"bundle.js",
+        filename:"mj-ui.js",
         path:path.join(__dirname,"./build"),
         libraryTarget: "umd",
         library:"MJUI"

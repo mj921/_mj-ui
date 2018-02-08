@@ -32,7 +32,7 @@ module.exports = {
             }
         ]
     },
-    devtool:"#source-map",
+    devtool:"#eval-source-map",
     devServer:{
         contentBase:path.join(__dirname,'./build'),
         historyApiFallback: true,

@@ -33,12 +33,6 @@ module.exports = {
         ]
     },
     devtool:"#source-map",
-    devServer:{
-        contentBase:path.join(__dirname,'./build'),
-        historyApiFallback: true,
-        host: '0.0.0.0',
-        port:8081
-    },
     plugins:[
         new webpack.optimize.UglifyJsPlugin({    //压缩代码
            compress: {

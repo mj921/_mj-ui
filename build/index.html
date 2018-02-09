@@ -115,6 +115,9 @@
             
         </mj-tab>
         <mj-date-picker v-model="datepicker" type="time"></mj-date-picker>
+        <!-- <mj-tree :data="list">
+            <mj-tree-column prop="a" label="啊啊"></mj-tree-column>
+        </mj-tree> -->
     </div>
     <script src="vue.js"></script>
     <script src="mj-ui.js"></script>
@@ -143,7 +146,17 @@
                 checkbox:true,
                 dialog:false,
                 radio:"1",
-                datepicker:""
+                datepicker:"",
+                list:[
+                    {
+                        a:"a1",
+                        children:[
+                            {
+                                a:"a11"
+                            }
+                        ]
+                    }
+                ]
             },
             methods:{
                 checkboxChange:function(){

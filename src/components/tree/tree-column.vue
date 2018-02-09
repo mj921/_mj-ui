@@ -1,0 +1,36 @@
+<style></style>
+<template>
+    <div></div>
+</template>
+<script>
+    export default {
+        props:{
+            prop:String,
+            label:String,
+            width:{
+                type:String,
+                default:"80px"
+            },
+            "min-width":{
+                type:String,
+                default:"80px"
+            },
+            align:{
+                type:String,
+                default:"left"
+            },
+            formatter:Function,
+            open:Boolean,
+            checkbox:{
+                type:Boolean,
+                default:false
+            }
+        },
+        created:function(){
+            if(this.$parent && this.$parent.$vnode && this.$parent.$vnode.tag && /^vue-component-\d*-mj-tree$/.test(this.$parent.$vnode.tag)){
+                this.$parent.columnList.push(this._props);
+            }
+        },
+        name:"mj-tree-column"
+    }
+</script>

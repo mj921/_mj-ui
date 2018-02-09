@@ -47,7 +47,7 @@ const components = [
     Table,
     TableColumn,
     TabPanel,
-    Textarea
+    Textarea,
 ]
 const install = function(Vue,options){
     components.map(component => Vue.component(component.name,component))
@@ -85,5 +85,5 @@ module.exports = {
     Table,
     TableColumn,
     TabPanel,
-    Textarea
+    Textarea,
 }

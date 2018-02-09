@@ -21,6 +21,11 @@ import TableColumn from "./components/table/table-column.vue";
 import TabPanel from "./components/tab/tab-panel.vue";
 import Textarea from "./components/textarea/textarea.vue";
 
+import $Message from "./components/message/message.js";
+import $Confirm from "./components/confirm/confirm.js";
+
+import Util from "./util.js";
+
 const components = [
     Button,
     Checkbox,
@@ -44,7 +49,6 @@ const components = [
     TabPanel,
     Textarea
 ]
-
 const install = function(Vue,options){
     components.map(component => Vue.component(component.name,component))
 }
@@ -53,8 +57,12 @@ if (typeof window !== 'undefined' && window.Vue) {
     window.Vue.directive("mjscrolltop",function(el,binding){
         el.scrollTop = binding.value;
     })
+    $Message(window.Vue);
+    $Confirm(window.Vue);
 }
-
+if(window){
+    window.MjUtil = Util;
+}
 module.exports = {
     Button,
     Checkbox,
@@ -66,6 +74,7 @@ module.exports = {
     FormItem,
     Input,
     Loading,
+    MjUtil,
     Page,
     Radio,
     RadioItem,

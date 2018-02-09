@@ -2125,94 +2125,94 @@ Vue.component("mj-tree",{
 //     },
 // })
 //消息弹框
-var MjMessage = Vue.extend({
-    template:"<div :class='\"mj-message mj-message-\" + type'><p>{{message}}</p></div>",
-    props:{
-        type:{
-            type:String,
-            default:"info"
-        },
-        message:String,
-    }
-})
-var MjConfirm = Vue.extend({
-    render:function(createElement){
-        return createElement("div",{"class":"mj-confirm"},[
-                createElement("div",{"class":"mj-confirm-mask"}),
-                createElement("div",{"class":{"mj-confirm-default":true}},[
-                    createElement("div",{"class":"mj-confirm-header"},[
-                        createElement("span",{domProps:{innerText:this.title}}),
-                        createElement("div",{"class":"mj-confirm-close",on:{click:this.closeFun}})
-                    ]),
-                    createElement("div",{"class":"mj-confirm-body",domProps:{innerText:this.message}}),
-                    createElement("div",{"class":"mj-confirm-footer"},[
-                        createElement("mj-button",{domProps:{innerText:this.cancelBtnText},on:{click:this.cancelFun},props:{type:"text",size:"small"}}),
-                        createElement("mj-button",{domProps:{innerText:this.confirmBtnText},on:{click:this.confirmFun},props:{size:"small"}})
-                    ])
-                ])
-            ]);
-    },
-    props:{
-        title:{
-            type:String,
-            default:"标题"
-        },
-        message:String,
-        confirmBtnText:{
-            type:String,
-            default:"确定"
-        },
-        cancelBtnText:{
-            type:String,
-            default:"取消"
-        },
-        confirmFun:Function,
-        cancelFun:Function,
-        closeFun:Function,
-    }
-})
-Vue.prototype.$message = function(opt){
-    opt = opt || {};
-    var message = new MjMessage();
-    if(/^info|waring|error|success$/.test(opt.type)){
-        message.type = opt.type;
-    }else{
-        message.type = "info";
-    }
-    message.message = (opt.message === undefined || opt.message === null) ? "" : opt.message;
-    document.body.appendChild(message.$mount().$el);
-    setTimeout(function(){
-        document.body.removeChild(message.$mount().$el);
-        message.$destroy();
-    },opt.time || 3000);
-}
-Vue.prototype.$confirm = function(opt){
-    opt = opt || {};
-    var confirm = new MjConfirm();
-    confirm.message = (opt.message === undefined || opt.message === null) ? "" : opt.message;
-    opt.title ? confirm.title = opt.title : "";
-    opt.confirmBtnText ? confirm.confirmBtnText = opt.confirmBtnText : "";
-    opt.cancelBtnText ? confirm.cancelBtnText = opt.cancelBtnText : "";
-    confirm.confirmFun = function(){
-        if(opt.confirmFun){
-            opt.confirmFun();
-        }
-        document.body.removeChild(confirm.$mount().$el);
-        confirm.$destroy();
-    };
-    confirm.cancelFun = function(){
-        if(opt.cancelFun){
-            opt.cancelFun();
-        }
-        document.body.removeChild(confirm.$mount().$el);
-        confirm.$destroy();
-    };
-    confirm.closeFun = function(){
-        document.body.removeChild(confirm.$mount().$el);
-        confirm.$destroy();
-    };
-    document.body.appendChild(confirm.$mount().$el);
-}
+// var MjMessage = Vue.extend({
+//     template:"<div :class='\"mj-message mj-message-\" + type'><p>{{message}}</p></div>",
+//     props:{
+//         type:{
+//             type:String,
+//             default:"info"
+//         },
+//         message:String,
+//     }
+// })
+// var MjConfirm = Vue.extend({
+//     render:function(createElement){
+//         return createElement("div",{"class":"mj-confirm"},[
+//                 createElement("div",{"class":"mj-confirm-mask"}),
+//                 createElement("div",{"class":{"mj-confirm-default":true}},[
+//                     createElement("div",{"class":"mj-confirm-header"},[
+//                         createElement("span",{domProps:{innerText:this.title}}),
+//                         createElement("div",{"class":"mj-confirm-close",on:{click:this.closeFun}})
+//                     ]),
+//                     createElement("div",{"class":"mj-confirm-body",domProps:{innerText:this.message}}),
+//                     createElement("div",{"class":"mj-confirm-footer"},[
+//                         createElement("mj-button",{domProps:{innerText:this.cancelBtnText},on:{click:this.cancelFun},props:{type:"text",size:"small"}}),
+//                         createElement("mj-button",{domProps:{innerText:this.confirmBtnText},on:{click:this.confirmFun},props:{size:"small"}})
+//                     ])
+//                 ])
+//             ]);
+//     },
+//     props:{
+//         title:{
+//             type:String,
+//             default:"标题"
+//         },
+//         message:String,
+//         confirmBtnText:{
+//             type:String,
+//             default:"确定"
+//         },
+//         cancelBtnText:{
+//             type:String,
+//             default:"取消"
+//         },
+//         confirmFun:Function,
+//         cancelFun:Function,
+//         closeFun:Function,
+//     }
+// })
+// Vue.prototype.$message = function(opt){
+//     opt = opt || {};
+//     var message = new MjMessage();
+//     if(/^info|waring|error|success$/.test(opt.type)){
+//         message.type = opt.type;
+//     }else{
+//         message.type = "info";
+//     }
+//     message.message = (opt.message === undefined || opt.message === null) ? "" : opt.message;
+//     document.body.appendChild(message.$mount().$el);
+//     setTimeout(function(){
+//         document.body.removeChild(message.$mount().$el);
+//         message.$destroy();
+//     },opt.time || 3000);
+// }
+// Vue.prototype.$confirm = function(opt){
+//     opt = opt || {};
+//     var confirm = new MjConfirm();
+//     confirm.message = (opt.message === undefined || opt.message === null) ? "" : opt.message;
+//     opt.title ? confirm.title = opt.title : "";
+//     opt.confirmBtnText ? confirm.confirmBtnText = opt.confirmBtnText : "";
+//     opt.cancelBtnText ? confirm.cancelBtnText = opt.cancelBtnText : "";
+//     confirm.confirmFun = function(){
+//         if(opt.confirmFun){
+//             opt.confirmFun();
+//         }
+//         document.body.removeChild(confirm.$mount().$el);
+//         confirm.$destroy();
+//     };
+//     confirm.cancelFun = function(){
+//         if(opt.cancelFun){
+//             opt.cancelFun();
+//         }
+//         document.body.removeChild(confirm.$mount().$el);
+//         confirm.$destroy();
+//     };
+//     confirm.closeFun = function(){
+//         document.body.removeChild(confirm.$mount().$el);
+//         confirm.$destroy();
+//     };
+//     document.body.appendChild(confirm.$mount().$el);
+// }
 //异步请求ajax
 var MJajax = function(option){
     if(window.XMLHttpRequest){

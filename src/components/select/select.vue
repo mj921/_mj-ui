@@ -10,8 +10,6 @@
     </div>
 </template>
 <script>
-    import SelectItem from "./select-item.vue";
-
     import { objCopy } from "../../util.js";
 
     export default {
@@ -110,9 +108,6 @@
             this.$refs.inputRef.style.minWidth = this.$refs.list.offsetWidth + 2 + "px";
             this.$refs.list.style.minWidth = this.$refs.list.offsetWidth >= 164 ? this.$refs.list.offsetWidth : 164 + "px";
             this.isShow = false;
-        },
-        components:{
-            SelectItem
         },
         name:"mj-select"
     }

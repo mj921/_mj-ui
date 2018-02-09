@@ -6,7 +6,6 @@
     </div>
 </template>
 <script>
-    import RadioItem from "./radio-item.vue";
     export default {
         data:function(){
             return {
@@ -24,9 +23,6 @@
             resetDate:function(data){
                 this.$emit("input",data);
             }
-        },
-        components:{
-            RadioItem
         },
         name:"mj-radio"
     }

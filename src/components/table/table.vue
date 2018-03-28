@@ -9,10 +9,18 @@
                 <thead>
                     <tr>
                         <template v-for="column in columnList">
-                            <th v-if="column.checkbox" width="60px" ref="th">
+                            <th 
+                                v-if="column.checkbox" 
+                                width="60px" 
+                                ref="th">
                                 <mj-checkbox v-model="allChecked"></mj-checkbox>
                             </th>
-                            <th v-else :class="'mj-text-' + column.align" :width="column.width">{{column.label}}</th>
+                            <th 
+                                v-else 
+                                :class="'mj-text-' + column.align" 
+                                :width="column.width">
+                                {{column.label}}
+                            </th>
                         </template>
                     </tr>
                 </thead>
@@ -21,26 +29,48 @@
                     <template v-else>
                         <tr v-for="(row,i) in data">
                             <template v-for="column in columnList">
-                                <td v-if="column.checkbox" :class="'mj-text-' + column.align">
+                                <td 
+                                    v-if="column.checkbox" 
+                                    :class="'mj-text-' + column.align">
                                     <mj-checkbox v-model="checkedList[i]"></mj-checkbox>
                                 </td>
-                                <td v-else-if="column.formatter" :class="'mj-text-' + column.align">{{column.formatter(row,row[column.prop])}}</td>
-                                <td v-else :class="'mj-text-' + column.align">{{row[column.prop]}}</td>
+                                <td 
+                                    v-else-if="column.formatter" 
+                                    :class="'mj-text-' + column.align">
+                                    {{column.formatter(row,row[column.prop])}}
+                                </td>
+                                <td 
+                                    v-else 
+                                    :class="'mj-text-' + column.align">
+                                    {{row[column.prop]}}
+                                </td>
                             </template>
                         </tr>
                     </template>
                 </tbody>
             </table>
-            <div v-if="fixedWidth > 0" ref="fixDiv" class="mj-table-fixed" :style="'width:' + fixedWidth + 'px'">
+            <div 
+                v-if="fixedWidth > 0" 
+                ref="fixDiv" 
+                class="mj-table-fixed" 
+                :style="'width:' + fixedWidth + 'px'">
                 <table ref="table2" :style="'width:' + fixedWidth + 'px;'">
                     <thead>
                         <tr>
                             <template v-for="column in columnList">
                                 <template v-if="column.fixed === 'right'">
-                                    <th v-if="column.checkbox" :width="tableBgWidth < tableWidth ? '60px' : (60 / tableWidth * tableBgWidth + 'px')" ref="th">
+                                    <th 
+                                        v-if="column.checkbox" 
+                                        :width="tableBgWidth < tableWidth ? '60px' : (60 / tableWidth * tableBgWidth + 'px')" 
+                                        ref="th">
                                         <mj-checkbox v-model="allChecked"></mj-checkbox>
                                     </th>
-                                    <th v-else :class="'mj-text-' + column.align" :width="tableBgWidth < tableWidth ? column.width : (+column.width.replace('px','') / tableWidth * tableBgWidth + 'px')">{{column.label}}</th>
+                                    <th 
+                                        v-else 
+                                        :class="'mj-text-' + column.align" 
+                                        :width="tableBgWidth < tableWidth ? column.width : (+column.width.replace('px','') / tableWidth * tableBgWidth + 'px')">
+                                        {{column.label}}
+                                    </th>
                                 </template>
                             </template>
                         </tr>
@@ -51,11 +81,21 @@
                             <tr v-for="(row,i) in data">
                                 <template v-for="column in columnList">
                                     <template v-if="column.fixed === 'right'">
-                                        <td v-if="column.checkbox" :class="'mj-text-' + column.align">
+                                        <td 
+                                            v-if="column.checkbox" 
+                                            :class="'mj-text-' + column.align">
                                             <mj-checkbox v-model="checkedList[i]"></mj-checkbox>
                                         </td>
-                                        <td v-else-if="column.formatter" :class="'mj-text-' + column.align">{{column.formatter(row,row[column.prop])}}</td>
-                                        <td v-else :class="'mj-text-' + column.align">{{row[column.prop]}}</td>
+                                        <td 
+                                            v-else-if="column.formatter" 
+                                            :class="'mj-text-' + column.align">
+                                            {{column.formatter(row,row[column.prop])}}
+                                        </td>
+                                        <td 
+                                            v-else 
+                                            :class="'mj-text-' + column.align">
+                                            {{row[column.prop]}}
+                                        </td>
                                     </template>
                                 </template>
                             </tr>
@@ -67,7 +107,12 @@
         <div ref="load" class="mj-table-loading" v-show="loadNum > 0">
             <div>加载中...</div>
         </div>
-        <mj-page :total="total" :pages="pages" :pageCurr="pageCurr" :pageChange="pageChange"></mj-page>
+        <mj-page 
+            :total="total" 
+            :pages="pages" 
+            :pageCurr="pageCurr" 
+            :pageChange="pageChange">
+        </mj-page>
         <slot v-show="false"></slot>
     </div>
 </template>

@@ -1,8 +1,21 @@
 <style></style>
 <template>
-    <div  class='mj-input'>
-        <input spellcheck='false' v-model='currValue' :placeholder='placeholder' :type='type' :disabled='disabled' :readonly='readonly' @focus='_handleFocus' @blur='_handleBlur' @change='_handleChange' />
-        <div class='mj-input-append' v-if='$slots.append && this.$slots.append.length > 0'><slot name='append'></slot></div>
+    <div class='mj-input'>
+        <input 
+            spellcheck='false' 
+            v-model='currValue' 
+            :placeholder='placeholder' 
+            :type='type' 
+            :disabled='disabled' 
+            :readonly='readonly' 
+            @focus='_handleFocus' 
+            @blur='_handleBlur' 
+            @change='_handleChange' />
+        <div 
+            class='mj-input-append' 
+            v-if='$slots.append && this.$slots.append.length > 0'>
+            <slot name='append'></slot>
+        </div>
     </div>
 </template>
 <script>

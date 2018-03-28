@@ -1,8 +1,18 @@
 <style></style>
 <template>
     <div class="mj-textarea">
-        <textarea ref="textarea" spellcheck="false" :rows="rows" :readonly="readonly" :disabled="disabled" :placeholder="placeholder"
-            @input="_handleInput" @focus="_handleFocus" @blur="_handleBlur">{{value || ""}}</textarea>
+        <textarea 
+            ref="textarea" 
+            spellcheck="false" 
+            :rows="rows" 
+            :readonly="readonly" 
+            :disabled="disabled" 
+            :placeholder="placeholder"
+            @input="_handleInput" 
+            @focus="_handleFocus" 
+            @blur="_handleBlur">
+            {{value || ""}}
+        </textarea>
     </div>
 </template>
 <script>

@@ -5,7 +5,9 @@
             <dl v-for="panel in panelList" @click="selectTab(panel.index)">{{panel.title}}</dl>
         </div>
         <div class="mj-tabs-panels">
-            <div class="mj-tabs-panel-list clearfix" :style="'width:' + panelList.length * width + 'px;margin-left:-' + width * currIndex + 'px;-webkit-transition-duration:' + (0.55 + 0.05 * changeIndex) + 's;transition-duration:' + (0.55 + 0.05 * changeIndex) + 's;'">
+            <div 
+                class="mj-tabs-panel-list clearfix" 
+                :style="'width:' + panelList.length * width + 'px;margin-left:-' + width * currIndex + 'px;-webkit-transition-duration:' + (0.55 + 0.05 * changeIndex) + 's;transition-duration:' + (0.55 + 0.05 * changeIndex) + 's;'">
                 <slot></slot>
             </div>
         </div>

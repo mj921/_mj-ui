@@ -2,9 +2,25 @@
 <template>
     <div class="mj-select">
         <i ref="selectIcon" :class="{'mj-select-icon-show':isShow,'mj-select-icon-hide':!isShow}"></i>
-        <input type="text" ref="inputRef" class="mj-select-input" :disabled="filterFlag" :readonly="filterFlag" v-model="str" @blur="_handleBlur" @input="_handleInput">
+        <input 
+            type="text" 
+            ref="inputRef" 
+            class="mj-select-input" 
+            :disabled="filterFlag" 
+            :readonly="filterFlag" 
+            v-model="str" 
+            @blur="_handleBlur" 
+            @input="_handleInput" />
         <div ref="list" :class="{'mj-select-list':true,'mj-select-show':isShow}" @click="_handleScroll">
-            <mj-select-item v-for="option in list" :key="option.label || option.value" :label="option.label" :value="option.value" v-show="option.showFlag" :created="true" :click-fun="_selectValue"></mj-select-item>
+            <mj-select-item 
+                v-for="option in list" 
+                :key="option.label || option.value" 
+                :label="option.label" 
+                :value="option.value" 
+                v-show="option.showFlag" 
+                :created="true" 
+                :click-fun="_selectValue">
+            </mj-select-item>
         </div>
         <div class="hidden"><slot></slot></div>
     </div>

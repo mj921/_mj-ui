@@ -4,7 +4,12 @@
         <div class="mj-page-main">
             <div class="mj-page-total" v-if="total > 0">共{{total}}条</div>
             <div class="mj-page-btn mj-page-prev" @click="prevFun">&lt;&lt;</div>
-            <div v-for="btn in btns"  :class="'mj-page-btn ' + (btn.isOmitted ? 'mj-page-omitted' : (currPage === btn.i ? 'mj-page-current' : ''))" @click="btn.isOmitted ? null : pageNumClick(btn.i)">{{btn.isOmitted ? "..." : btn.i}}</div>
+            <div 
+                v-for="btn in btns"  
+                :class="'mj-page-btn ' + (btn.isOmitted ? 'mj-page-omitted' : (currPage === btn.i ? 'mj-page-current' : ''))" 
+                @click="btn.isOmitted ? null : pageNumClick(btn.i)">
+                {{btn.isOmitted ? "..." : btn.i}}
+            </div>
             <div class="mj-page-btn mj-page-prev" @click="nextFun">&gt;&gt;</div>
             <div class="mj-page-ipt">
                 <div>到第</div>

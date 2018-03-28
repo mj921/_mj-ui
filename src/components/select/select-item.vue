@@ -1,6 +1,11 @@
 <style></style>
 <template>
-    <dl v-if="created" :class="{'mj-select-item':true,'hidden':!this.showFlag}" @click="_handleClick">{{label || value}}</dl>
+    <dl 
+        v-if="created" 
+        :class="{'mj-select-item':true,'hidden':!this.showFlag}" 
+        @click="_handleClick">
+        {{label || value}}
+    </dl>
 </template>
 <script>
     export default {

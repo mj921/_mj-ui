@@ -1,32 +1,67 @@
 <style></style>
 <template>
     <div class="mj-data-picker" ref="datePicker">
-        <input ref="input" type="text" class="mj-data-input" v-model="value" readonly @blur="_handleBlur" @click="_handleClick" />
-        <i ref="icon" class="mj-data-icon" @click="_clearClick"></i>
-        <div :class="{'mj-data-main':true,'mj-data-main-bottom':!isTop,'hidden':isHide,'mj-data-main-top':isTop}" @click="_stopPropagationFun">
-            <div class="mj-data-times clearfix" v-if="type === 'time'">
-                <input type="text" :value="year + '-' + month + '-' + day" />
-                <input ref="timeIpt" type="text" :value="hour + ':' + minute + ':' + second" @click="_timeClick" @blur="_timeBlur" />
+        <input 
+            ref="input" 
+            type="text" 
+            class="mj-data-input" 
+            v-model="value" 
+            readonly 
+            @blur="_handleBlur" 
+            @click="_handleClick" />
+        <i 
+            ref="icon" 
+            class="mj-data-icon" 
+            @click="_clearClick"></i>
+        <div 
+            :class="{'mj-data-main':true,'mj-data-main-bottom':!isTop,'hidden':isHide,'mj-data-main-top':isTop}" 
+            @click="_stopPropagationFun">
+            <div 
+                class="mj-data-times clearfix" 
+                v-if="type === 'time'">
+                <input 
+                    type="text" 
+                    :value="year + '-' + month + '-' + day" />
+                <input 
+                    ref="timeIpt" type="text" 
+                    :value="hour + ':' + minute + ':' + second" 
+                    @click="_timeClick" 
+                    @blur="_timeBlur" />
                 <div :class="{'mj-data-times-main':true,'hidden':isTimeHide}">
                     <div class="mj-data-times-list clearfix">
                         <div>
                             <div ref="hourList" v-mjscrolltop="(+hour - 2) * 32">
                                 <ul>
-                                    <li v-for="i in 24" @click="_selectHour(i - 1)" :class="{'mj-currtime':i - 1 === +hour}">{{addZero(i - 1)}}</li>
+                                    <li 
+                                        v-for="i in 24" 
+                                        @click="_selectHour(i - 1)" 
+                                        :class="{'mj-currtime':i - 1 === +hour}">
+                                        {{addZero(i - 1)}}
+                                    </li>
                                 </ul>
                             </div>
                         </div>
                         <div>
                             <div ref="minuteList" v-mjscrolltop="(+minute - 2) * 32">
                                 <ul>
-                                    <li v-for="i in 60" @click="_selectMinute(i - 1)" :class="{'mj-currtime':i - 1 === +minute}">{{addZero(i - 1)}}</li>
+                                    <li 
+                                        v-for="i in 60" 
+                                        @click="_selectMinute(i - 1)" 
+                                        :class="{'mj-currtime':i - 1 === +minute}">
+                                        {{addZero(i - 1)}}
+                                    </li>
                                 </ul>
                             </div>
                         </div>
                         <div>
                             <div ref="secondList" v-mjscrolltop="(+second - 2) * 32">
                                 <ul>
-                                    <li v-for="i in 60" @click="_selectSecond(i - 1)" :class="{'mj-currtime':i - 1 === +second}">{{addZero(i - 1)}}</li>
+                                    <li 
+                                        v-for="i in 60" 
+                                        @click="_selectSecond(i - 1)" 
+                                        :class="{'mj-currtime':i - 1 === +second}">
+                                        {{addZero(i - 1)}}
+                                    </li>
                                 </ul>
                             </div>
                         </div>
@@ -54,16 +89,31 @@
                     <i class="mj-data-next"></i><i class="mj-data-next"></i>
                 </div>
                 <div :class="{'mj-data-yearList':true,'hidden':isMonthHide}">
-                    <dl v-for="(m,i) in monthList" :class="{'currYear':(i + 1) === +month,'disabledYear':computedDisabledMonthFlag(i + 1)}" @click="_monthClick(i + 1)">{{m}}</dl>
+                    <dl 
+                        v-for="(m,i) in monthList" 
+                        :class="{'currYear':(i + 1) === +month,'disabledYear':computedDisabledMonthFlag(i + 1)}" 
+                        @click="_monthClick(i + 1)">
+                        {{m}}
+                    </dl>
                 </div>
                 <div :class="{'mj-data-yearList':true,'hidden':isYearHide}">
-                    <dl v-for="y in yearList" :class="{'currYear':y === +year,'disabledYear':computedDisabledMonthFlag(y)}" @click="_yearClick(y)">{{y}}</dl>
+                    <dl 
+                        v-for="y in yearList" 
+                        :class="{'currYear':y === +year,'disabledYear':computedDisabledMonthFlag(y)}" 
+                        @click="_yearClick(y)">
+                        {{y}}
+                    </dl>
                 </div>
             </div>
             <div class="mj-data-list clearfix">
                 <dl v-for="weekText in weekTextList">{{weekText}}</dl>
                 <dl v-for="i in weekDay"></dl>
-                <dl v-for="i in days" :class="{'mj-data-current':+day === i,'mj-data-day':true,'mj-data-disabled':computedDisabledDayFlag(i)}" @click="_selectDay(i)">{{addZero(i)}}</dl>
+                <dl 
+                    v-for="i in days" 
+                    :class="{'mj-data-current':+day === i,'mj-data-day':true,'mj-data-disabled':computedDisabledDayFlag(i)}" 
+                    @click="_selectDay(i)">
+                    {{addZero(i)}}
+                </dl>
             </div>
             <div class="mj-data-button">
                 <div class="mj-data-button-cancle" @click="_handleCancle">取消</div>

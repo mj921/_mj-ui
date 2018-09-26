@@ -1,12 +1,17 @@
 <style></style>
 <template>
-    <dl @click="_handleClick" v-if="!created" :class="{'mj-radio-checked':checked}">
+    <dl @click="_handleClick" :class="{'mj-radio-checked': parent && parent.value === value}">
         <div class="mj-radio-div"></div>
         <label>{{label}}</label>
     </dl>
 </template>
 <script>
     export default {
+        data () {
+            return {
+                parent: null
+            }
+        },
         props:{
             value:{
                 type:String,
@@ -19,21 +24,22 @@
             checked:{
                 type:Boolean,
                 default:false
-            },
-            created:{
-                type:Boolean,
-                default:true
             }
         },
         methods:{
             _handleClick:function(){
-                this.$emit("click",this.value);
+                this.$emit("click", this.value);
+                if (this.parent) {
+                    this.parent._setValue(this.value);
+                }
             }
         },
         created:function(){
-            if(this.created && this.$parent && this.$parent.$vnode && this.$parent.$vnode.tag && /^vue-component-\d*-mj-radio$/.test(this.$parent.$vnode.tag)){
-                this.$parent.radioItemList.push({value:this.value,label:this.label});
+            var parent = this.$parent;
+            while (parent && parent.$options._componentTag !== "mj-radio") {
+                parent = parent.$parent;
             }
+            this.parent = parent;
         },
         name:"mj-radio-item"
     }

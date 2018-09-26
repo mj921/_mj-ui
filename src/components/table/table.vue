@@ -145,19 +145,19 @@
                 default:0
             }
         },
-        data:function(){
+        data () {
             return {
                 checkedList:[],//每一行的选中状态数组
                 checkedflagList:[],//checkbox是否可选择数组
                 columnList:[],
                 checkboxFlag:false,//是否已有选择框列
-                filterCheckbox:function(){return false;},
+                filterCheckbox: () => false,
                 tableBgWidth:0
             }
         },
         methods:{
             objCopy,
-            _barMouseDown:function(e){
+            _barMouseDown (e) {
                 e = e || window.event;
                 if(e.pageX){
                     var x = e.pageX;
@@ -170,7 +170,7 @@
                 var table1 = this.$refs.table1;
                 var left = +bar.style.left.replace(/[a-z]/g,"");
                 var self = this;
-                document.onmousemove = function(e){
+                document.onmousemove = (e) => {
                     if(e.pageX){
                         var x1 = e.pageX - x;
                     }else{
@@ -187,14 +187,14 @@
                         tableBg.scrollLeft = (self.tableWidth - tableBg.offsetWidth) * (left + x1) / (tableBg.offsetWidth - bar.offsetWidth);
                     }
                 }
-                document.onmouseup = function(e){
+                document.onmouseup = (e) => {
                     document.onmousemove = null;
                     document.onmouseup = null;
                 }
             }
         },
         watch:{
-            data:function(){
+            data () {
                 var checkedList = [];
                 //选择框默认全不选
                 for(var i = 0,len = this.data.length;i < len;i++){
@@ -202,7 +202,7 @@
                 }
                 this.checkedList = checkedList;
             },
-            checkboxFlag:function(){
+            checkboxFlag () {
                 var checkedList = [];
                 //选择框默认全不选
                 for(var i = 0,len = this.data.length;i < len;i++){
@@ -211,7 +211,7 @@
                 this.checkedList = checkedList;
             }
         },
-        updated:function(){
+        updated () {
             if(this.$refs.tableBg){
                 this.$refs.tableBg.scrollLeft = 0;
                 if(this.$refs.load && this.$refs.th){//设置加载层样式
@@ -225,7 +225,7 @@
             }
         },
         computed:{
-            fixedWidth:function(){
+            fixedWidth () {
                 var fixedWidth = 0;
                 for(var i = 0,len = this.columnList.length;i < len;i++){
                     if(this.columnList[i].fixed === "right"){
@@ -234,7 +234,7 @@
                 }
                 return fixedWidth;
             },
-            tableWidth:function(){
+            tableWidth () {
                 var tableWidth = 0;
                 for(var i = 0,len = this.columnList.length;i < len;i++){
                     tableWidth += +this.columnList[i].width.replace(/px/g,"");
@@ -243,7 +243,7 @@
             },
             //是否全选
             allChecked:{
-                get:function(){
+                get () {
                     for(var i = 0,len = this.checkedList.length;i < len;i++){
                         if(!this.checkedList[i]){
                             return false;
@@ -260,7 +260,7 @@
                 }
             },
             //选中的数据数组
-            checkedData:function(){
+            checkedData () {
                 var arr = [];
                 for(var j = 0,len = this.checkedList.length;j < len;j++){
                     if(this.checkedList[j]){
@@ -270,7 +270,7 @@
                 return arr;
             }
         },
-        mounted:function(){
+        mounted () {
             this.tableBgWidth = this.$refs.tableBg.offsetWidth;
             var table2 = this.$refs.table2;
             var fixDiv = this.$refs.fixDiv;
@@ -292,7 +292,7 @@
                     bar.style.width = tableBg.offsetWidth / this.tableWidth * tableBg.offsetWidth + "px";
                 }
             }
-            window.addEventListener("resize",function(){
+            window.addEventListener("resize",() => {
                 if(bar && tableBg && table1){
                     scrollBar.style.width = tableBg.offsetWidth + "px";
                     if(tableBg.offsetWidth === self.tableWidth){
@@ -304,7 +304,7 @@
                 } 
             })
         },
-        created:function(){
+        created () {
             this.checkedList = [];
             //选择框默认全不选
             for(var i = 0,len = this.data.length;i < len;i++){

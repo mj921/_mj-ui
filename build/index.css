@@ -1,0 +1,33 @@
+body{
+    background-color: #fff;
+}
+#app{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+.app-left{
+    position: absolute;
+    width: 200px;
+    overflow: auto;
+    z-index: 1;
+}
+.app-left li{
+    padding-left: 20px;
+    line-height: 36px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+}
+.app-left li a{
+    color: #999;
+}
+.app-left li a.active{
+    color: #000;
+}
+.app-right{
+    position: absolute;
+    width: 100%;
+    box-sizing: border-box;
+    padding-left: 200px;
+}

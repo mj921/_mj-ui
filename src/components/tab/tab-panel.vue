@@ -4,24 +4,32 @@
 </template>
 <script>
     export default {
-        data:function(){
+        data () {
             return {
-                _index:0,
-                width:"100%"
+                _index : 0,
+                width: "100%",
+                parent: null
             }
         },
-        props:{
-            title:{
-                type:String,
-                default:"标题"
+        props: {
+            title: {
+                type: String,
+                default: "标题"
             }
         },
-        created:function(){
-            if(this.$parent && this.$parent.$vnode && this.$parent.$vnode.tag && /^vue-component-\d*-mj-tab$/.test(this.$parent.$vnode.tag)){
+        created () {
+            if (this.$parent && this.$parent.$options && this.$parent.$options._componentTag === "mj-tabs") {
+                this.parent = this.$parent;
                 this._index = this.$parent.panelList.length;
                 this.$parent.panelList.push({title:this.title,index:this._index,child:this});
             }
         },
-        name:"mj-tab-panel"
+        name: "mj-tab-panel"
     }
 </script>
+<style scoped>
+    .mj-tab-panel{
+        float: left;
+        padding: 10px;
+    }
+</style>

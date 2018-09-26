@@ -1,26 +1,28 @@
 <style></style>
 <template>
     <div class="mj-radio">
-        <mj-radio-item v-for="radio in radioItemList" :label="radio.label" :value="radio.value" :checked="radio.value === value" @click="_checkeValue" :key="radio.value" :created="false"></mj-radio-item>
-        <div class="hidden"><slot></slot></div>
+        <slot></slot>
+    </div>
     </div>
 </template>
 <script>
     export default {
-        data:function(){
+        data: function(){
             return {
-                radioItemList:[]
+                radioItemList: []
             }
         },
         props:{
-            value:String
+            value: String
         },
         methods:{
-            _checkeValue:function(value){
-                this.$emit("input",value);
-                this.$emit("change");
+            _setValue:function(value){
+                if (this.value !== value) {
+                    this.$emit("input", value);
+                    this.$emit("change");
+                }
             },
-            resetDate:function(data){
+            resetDate: function(data){
                 this.$emit("input",data);
             }
         },

@@ -14,9 +14,6 @@ a{
     text-decoration: none;
     color: #1f272e;
 }
-#app{
-    padding: 0 0 20px 0px;
-}
 .clearfix:after {content: "."; display: block; height:0; clear:both; visibility: hidden;}
 .clearfix { *zoom:1; }
 /*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/
@@ -141,7 +138,7 @@ body.body-dialog{
 }
 /*表格*/
 /*按钮*/
-.mj-button{
+/*.mj-button{
     display: inline-block;
     margin: 0 5px 5px;
     padding: 6px 10px;
@@ -173,7 +170,7 @@ body.body-dialog{
     background-color: #fff;
     border:1px solid #e7e9f3;
     color: #1f272e;
-}
+}*/
 /*按钮*/
 .mj-page{
     padding: 22px 30px;
@@ -471,7 +468,7 @@ body.body-dialog{
 }
 /*输入框*/
 /*下拉框*/
-.mj-select{
+/*.mj-select{
     position: relative;
     display: inline-block;
     text-align: left;
@@ -536,6 +533,7 @@ body.body-dialog{
     border:1px solid #e7e9f3;
     background-color: #fff;
     outline: none;
+    cursor: pointer;
 }
 .mj-form-item.mj-form-error .mj-select-input{
     border-color: #ff4949;
@@ -567,7 +565,7 @@ body.body-dialog{
 }
 .mj-select-item:hover{
     background-color: #e4e8f1
-}
+}*/
 /*下拉框*/
 /*checkbox*/
 .mj-checkbox-group>*:not(.mj-checkbox){
@@ -667,7 +665,7 @@ body.body-dialog{
 }
 /*文本框*/
 /*表单*/
-/*对话框*/
+/*对话框*//*
 .mj-dialog{
     position: fixed;
     left: 0;
@@ -787,10 +785,10 @@ body.body-dialog{
     font-size: 16px;
     border-radius: 0 0 3px 3px;
     background-color: #fff;
-}
+}*/
 /*对话框*/
 /*日期选择框*/
-.mj-data-picker{
+/*.mj-data-picker{
     position: relative;
     display: inline-block;
     font-size: 12px;
@@ -1132,10 +1130,10 @@ body.body-dialog{
     text-align: center;
     font-size: 12px;
     cursor: pointer;
-}
+}*/
 /*日期选择框*/
 /*标签页*/
-.mj-tabs{
+/*.mj-tabs{
     position: relative;
     width: 100%;
     padding: 40px 0 0;
@@ -1200,10 +1198,10 @@ body.body-dialog{
 .mj-tab-panel{
     float: left;
     padding: 10px;
-}
+}*/
 /*标签页*/
 /*消息弹窗*/
-.mj-message{
+/*.mj-message{
     position: fixed;
     left: 35%;
     top: 15%;
@@ -1232,7 +1230,7 @@ body.body-dialog{
 }
 .mj-message-error{
     background-color: #ff4949;
-}
+}*/
 /*消息弹窗*/
 /*树*/
 .mj-tree{
@@ -1288,7 +1286,7 @@ body.body-dialog{
 .hidden{
     display: none;
 }
-/*确认框*/
+/*确认框*//*
 .mj-confirm{
     position: fixed;
     left: 0;
@@ -1376,26 +1374,9 @@ body.body-dialog{
     text-align: right;
     border-radius: 0 0 3px 3px;
     background-color: #fff;
-}
+}*/
 /*确认框*/
-.mj-loading{
-    position: fixed;
-    left: 0;
-    top: 0;
-    width:100%;
-    height: 100%;
-    text-align: center;
-    background-color: rgba(255, 255, 255, 0.92);
-    color:#1f272e;
-    font-size: 16px;
-    z-index: 99999999999;
-}
-.mj-loading>div{
-    position: absolute;
-    top: 50%;
-    width: 100%;
-    margin-top: -8px;
-}
+/*s*/
 .mj-text-left{
     text-align: left;
 }

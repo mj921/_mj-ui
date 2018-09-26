@@ -14,20 +14,27 @@
             class="mj-data-icon" 
             @click="_clearClick"></i>
         <div 
-            :class="{'mj-data-main':true,'mj-data-main-bottom':!isTop,'hidden':isHide,'mj-data-main-top':isTop}" 
+            :class="[
+                'mj-data-main',
+                {
+                    'mj-data-main-bottom': !isTop,
+                    'hidden': isHide,
+                    'mj-data-main-top': isTop
+                }
+            ]" 
             @click="_stopPropagationFun">
             <div 
                 class="mj-data-times clearfix" 
-                v-if="type === 'time'">
+                v-if="type === 'datetime'">
                 <input 
                     type="text" 
-                    :value="year + '-' + month + '-' + day" />
+                    :value="dateStr" />
                 <input 
                     ref="timeIpt" type="text" 
-                    :value="hour + ':' + minute + ':' + second" 
+                    :value="timeStr" 
                     @click="_timeClick" 
                     @blur="_timeBlur" />
-                <div :class="{'mj-data-times-main':true,'hidden':isTimeHide}">
+                <div :class="['mj-data-times-main', {'hidden':isTimeHide}]">
                     <div class="mj-data-times-list clearfix">
                         <div>
                             <div ref="hourList" v-mjscrolltop="(+hour - 2) * 32">
@@ -88,29 +95,35 @@
                 <div class="mj-data-years-btn mj-data-next-year" @click="nextYear">
                     <i class="mj-data-next"></i><i class="mj-data-next"></i>
                 </div>
-                <div :class="{'mj-data-yearList':true,'hidden':isMonthHide}">
-                    <dl 
-                        v-for="(m,i) in monthList" 
-                        :class="{'currYear':(i + 1) === +month,'disabledYear':computedDisabledMonthFlag(i + 1)}" 
-                        @click="_monthClick(i + 1)">
-                        {{m}}
-                    </dl>
-                </div>
-                <div :class="{'mj-data-yearList':true,'hidden':isYearHide}">
-                    <dl 
-                        v-for="y in yearList" 
-                        :class="{'currYear':y === +year,'disabledYear':computedDisabledMonthFlag(y)}" 
-                        @click="_yearClick(y)">
-                        {{y}}
-                    </dl>
-                </div>
             </div>
-            <div class="mj-data-list clearfix">
+            <div class="mj-data-yearList" v-show="type === 'month' || isMonthHide === false">
+                <dl 
+                    v-for="(m,i) in monthList" 
+                    :class="{'currYear':(i + 1) === +month,'disabledYear':computedDisabledMonthFlag(i + 1)}" 
+                    @click="_monthClick(i + 1)">
+                    {{m}}
+                </dl>
+            </div>
+            <div class="mj-data-yearList" v-show="type === 'year' || isYearHide === false">
+                <dl 
+                    v-for="y in yearList" 
+                    :class="{'currYear':y === +year,'disabledYear':computedDisabledMonthFlag(y)}" 
+                    @click="_yearClick(y)">
+                    {{y}}
+                </dl>
+            </div>
+            <div class="mj-data-list clearfix" v-show="(type === 'date' || type === 'datetime') && isMonthHide && isYearHide">
                 <dl v-for="weekText in weekTextList">{{weekText}}</dl>
                 <dl v-for="i in weekDay"></dl>
                 <dl 
                     v-for="i in days" 
-                    :class="{'mj-data-current':+day === i,'mj-data-day':true,'mj-data-disabled':computedDisabledDayFlag(i)}" 
+                    :class="[
+                        'mj-data-day',
+                        {
+                            'mj-data-current':+day === i,
+                            'mj-data-disabled':computedDisabledDayFlag(i)
+                        }
+                    ]" 
                     @click="_selectDay(i)">
                     {{addZero(i)}}
                 </dl>
@@ -123,7 +136,7 @@
     </div>
 </template>
 <script>
-    import { addZero } from "../../util.js";
+    import { addZero, dateFmt } from "../../util.js";
     export default {
         props:{
             value:String,
@@ -132,9 +145,13 @@
                 default:"date"
             },
             max:String,
-            min:String
+            min:String,
+            valueFormat: {
+                type: String,
+                default: ""
+            }
         },
-        data:function(){
+        data () {
             return {
                 isHide:true,
                 year:"",
@@ -159,21 +176,22 @@
                 maxDay:-1,
                 minYear:-1,
                 minMonth:-1,
-                minDay:-1
+                minDay:-1,
+                valFmt: "yyyy-MM-dd"
             }
         },
         methods:{
             addZero,
-            computedDisabledDayFlag:function(day){
+            computedDisabledDayFlag (day) {
                 return this.year === this.minYear && this.month === this.minMonth && day < this.minDay || (this.year === this.maxYear && this.month === this.maxMonth && this.maxDay !== -1 && day > this.maxDay);
             },
-            computedDisabledMonthFlag:function(month){
+            computedDisabledMonthFlag (month) {
                 return this.maxYear === this.year && this.maxMonth < month || (this.minYear === this.year && this.minMonth > month);
             },
-            computedDisabledYearFlag:function(year){
+            computedDisabledYearFlag (year) {
                 return this.maxYear !== -1 && this.maxYear < year || year < this.minYear;
             },
-            checkMaxMonth:function(){
+            checkMaxMonth () {
                 if(this.maxMonth !== -1 && this.maxMonth <= this.month){
                     this.month = this.maxMonth;
                     if(this.maxDay !== -1 && this.maxDay < this.day){
@@ -181,7 +199,7 @@
                     }
                 }
             },
-            checkMinMonth:function(){
+            checkMinMonth () {
                 if(this.minMonth !== -1 && this.minMonth >= this.month){
                     this.month = this.minMonth;
                     if(this.minDay !== -1 && this.minDay > this.day){
@@ -189,17 +207,17 @@
                     }
                 }
             },
-            checkMaxDay:function(){
+            checkMaxDay () {
                 if(this.maxDay !== -1 && this.maxDay < this.day){
                     this.day = this.maxDay;
                 }
             },
-            checkMinDay:function(){
+            checkMinDay () {
                 if(this.minDay !== -1 && this.minDay > this.day){
                     this.day = this.minDay;
                 }
             },
-            prevYear:function(){
+            prevYear () {
                 if(!this.isYearHide){
                     if(this.yearList[0] > this.minYear){
                         this._getYearList(this.yearList[0] - 10);
@@ -210,7 +228,7 @@
                     this.checkMinMonth();
                 }
             },
-            prevMonth:function(){
+            prevMonth () {
                 if(!this.isYearHide){
                     if(+this.year % 10 === 0){
                         if(this.maxYear !== -1 && +this.year + 9 > this.maxYear){
@@ -246,7 +264,7 @@
                 this.checkMaxMonth();
                 this.checkMinMonth();
             },
-            nextYear:function(){
+            nextYear () {
                 if(!this.isYearHide){
                     if(this.maxYear === -1 || this.yearList[9] < this.maxYear){
                         this._getYearList(this.yearList[0] + 10);
@@ -257,7 +275,7 @@
                     this.checkMinMonth();
                 }
             },
-            nextMonth:function(){
+            nextMonth () {
                 if(!this.isYearHide){
                     if(+this.year % 10 === 9){
                         if(+this.year + 9 < this.minYear){
@@ -291,7 +309,7 @@
                 this.checkMaxMonth();
                 this.checkMinMonth();
             },
-            _showYearList:function(){
+            _showYearList () {
                 if(this.type !== "year"){
                     this.isYearHide = !this.isYearHide;
                     if(this.type !== "month"){
@@ -299,13 +317,13 @@
                     }
                 }
             },
-            _showMonthList:function(){
+            _showMonthList () {
                 if(this.type !== "month" && this.type !== "year"){
                     this.isMonthHide = !this.isMonthHide;
                     this.isYearHide = true;
                 }
             },
-            _yearClick:function(year){
+            _yearClick (year) {
                 if(!this.computedDisabledYearFlag(year)){
                     this.year = year;
                     if(this.type !== "year"){
@@ -315,7 +333,7 @@
                     this.checkMinMonth();
                 }
             },
-            _monthClick:function(month){
+            _monthClick (month) {
                 if(!this.computedDisabledMonthFlag(month)){
                     this.month = this.addZero(month);
                     if(this.type !== "month"){
@@ -325,10 +343,10 @@
                     this.checkMinDay();
                 }
             },
-            _hideTimeList:function(){
+            _hideTimeList () {
                 this.isTimeHide = true;
             },
-            _timeBlur:function(){
+            _timeBlur () {
                 if(/^([0-1]\d|2[0-4])\:([0-5]\d|60)\:([0-5]\d|60)$/.test(this.$refs.timeIpt.value)){
                     var arr = this.$refs.timeIpt.value.split(":");
                     this.hour = arr[0];
@@ -336,19 +354,19 @@
                     this.second = arr[2];
                 }
             },
-            _timeClick:function(){
+            _timeClick () {
                 this.isTimeHide = false;
             },
-            _selectHour:function(h){
+            _selectHour (h) {
                 this.hour = this.addZero(h);
             },
-            _selectMinute:function(m){
+            _selectMinute (m) {
                 this.minute = this.addZero(m);
             },
-            _selectSecond:function(s){
+            _selectSecond (s) {
                 this.second = this.addZero(s);
             },
-            _correctionDate:function(){
+            _correctionDate () {
                 var y = +this.year;
                 var m = +this.month;
                 var d = +this.day;
@@ -362,17 +380,17 @@
                     this.day = "30";
                 }
             },
-            _getValue:function(){
+            _getValue () {
                 var str = "";
                 switch(this.type){
                     case "date":
                         str = this.year + "-" + this.month + "-" + this.day;
                         break;
-                    case "time":
+                    case "datetime":
                         str = this.year + "-" + this.month + "-" + this.day + " " + this.hour + ":" + this.minute + ":" + this.second;
                         break;
                     case "year":
-                        str = this.year;
+                        str = this.year + "";
                         break;
                     case "month":
                         str = this.year + "-" + this.month;
@@ -381,9 +399,9 @@
                         str = this.year + "-" + this.month + "-" + this.day;
                         break;
                 }
-                this.currValue = str;
+                this.currValue = dateFmt(new Date(this.year, this.month, this.day, this.hour, this.minute, this.second), this.valFmt);;
             },
-            _getDays:function(){
+            _getDays () {
                 this.weekDay = new Date(this.year + "-" + this.month).getDay();
                 if(this.month === "02"){
                     if((this.year % 100 === 0 && this.year % 400 === 0) || (this.year % 100 !== 0 && this.year % 4 === 0)){
@@ -408,7 +426,7 @@
                     }
                 }
             },
-            _createValues:function(date){
+            _createValues (date) {
                 this.year = date.getFullYear() + "";
                 this.month = this.addZero(date.getMonth() + 1) + "";
                 this.day = this.addZero(date.getDate()) + "";
@@ -417,7 +435,7 @@
                 this.second = this.addZero(date.getSeconds()) + "";
                 this._getDays();
             },
-            _handleBlur:function(e){
+            _handleBlur (e) {
                 this.currValue = e.target.value;
                 this.$emit("input",e.target.value);
                 if(this.currValue){
@@ -430,29 +448,29 @@
                 }
                 this._createValues(this.date);
             },
-            _handleClick:function(){
+            _handleClick () {
                 this.isHide = !this.isHide;
             },
-            _clearClick:function(){
+            _clearClick () {
                 this.$emit("input","");
             },
-            _handleYes:function(){
+            _handleYes () {
                 this.isHide = true;
                 this._getValue();
                 this.$emit("input",this.currValue);
             },
-            _handleCancle:function(){
+            _handleCancle () {
                 this.isHide = true;
             },
-            _selectDay:function(day){
+            _selectDay (day) {
                 this.day = this.addZero(day) + "";
                 this._getValue();
-                if(this.type !== "time"){
+                if(this.type !== "datetime"){
                     this.isHide = true;
                     this.$emit("input",this.currValue);
                 }
             },
-            _getYearList:function(year){
+            _getYearList (year) {
                 year = year || this.year;
                 var y = ~~(year / 10) * 10;
                 var arr = []
@@ -461,12 +479,12 @@
                 }
                 this.yearList = arr;
             },
-            _domClick:function(e){
+            _domClick (e) {
                 if(e.target !== this.$refs.datePicker && e.target !== this.$refs.input && e.target !== this.$refs.icon){
                     this.isHide = true;
                 }
             },
-            _stopPropagationFun:function(e){
+            _stopPropagationFun (e) {
                 if(e && e.stopPropagation){
                     e.stopPropagation();
                 }else{
@@ -474,8 +492,8 @@
                 }
             }
         },
-        watch:{
-            value:function(){
+        watch: {
+            value () {
                 this.currValue = this.value;
                 if(this.currValue){
                     var d = new Date(this.currValue);
@@ -489,16 +507,16 @@
                 this.$parent && this.$parent.validate && this.$parent.validate(null,"change");
                 this.$emit("change")
             },
-            year:function(){
+            year () {
                 this._correctionDate();
                 this._getYearList();
                 this._getDays();
             },
-            month:function(){
+            month () {
                 this._correctionDate();
                 this._getDays();
             },
-            max:function(){
+            max () {
                 if(this.max !== "" && /^\d{4}(\-(0\d|1[0|1|2])(\-([0|1|2]\d|(30|31)))?)?$/.test(this.max)){
                     this.maxYear = this.max.substr(0,4);
                     if(this.max.length >= 7){
@@ -513,7 +531,7 @@
                     this.maxDay = -1;
                 }
             },
-            min:function(){
+            min () {
                 if(this.min !== "" && /^\d{4}(\-(0\d|1[0|1|2])(\-([0|1|2]\d|(30|31)))?)?$/.test(this.min)){
                     this.minYear = this.min.substr(0,4);
                     if(this.min.length >= 7){
@@ -528,7 +546,7 @@
                     this.minDay = -1;
                 }
             },
-            isTimeHide:function(){
+            isTimeHide () {
                 if(/^([0-1]\d|2[0-4])\:([0-5]\d|60)\:([0-5]\d|60)$/.test(this.$refs.timeIpt.value)){
                     var arr = this.$refs.timeIpt.value.split(":");
                     this.hour = arr[0];
@@ -537,14 +555,28 @@
                 }
             }
         },
-        created:function(){
+        computed: {
+            dateStr () {
+                return this.year + '-' + this.month + '-' + this.day;
+            },
+            timeStr () {
+                return this.hour + ':' + this.minute + ':' + this.second;
+            }
+        },
+        mounted () {
+            document.addEventListener("click",this._domClick);
+            if(window.innerHeight - this.$refs.datePicker.getBoundingClientRect().bottom <= 300){
+                this.isTop = true;
+            }
+        },
+        created () {
             this.currValue = this.value;
-            if(this.value){
+            if (this.value) {
                 this.date = new Date(this.value);
-            }else{
+            } else {
                 this.date = new Date();
             }
-            if(this.date == "Invalid Date"){
+            if (this.date == "Invalid Date") {
                 this.date = new Date();
             }
             this.year = this.date.getFullYear() + "";
@@ -580,13 +612,370 @@
                     this.minDay = this.min.substr(8,2);
                 }
             }
-        },
-        mounted:function(){
-            document.addEventListener("click",this._domClick);
-            if(window.innerHeight - this.$refs.datePicker.getBoundingClientRect().bottom <= 300){
-                this.isTop = true;
+            if (this.valueFormat) {
+                this.valFmt = this.valueFormat;
+            } else {
+                switch(this.type){
+                    case "date":
+                        this.valFmt = "yyyy-MM-dd";
+                        break;
+                    case "datetime":
+                        this.valFmt = "yyyy-MM-dd HH:mm:ss";
+                        break;
+                    case "year":
+                        this.valFmt = "yyyy";
+                        break;
+                    case "month":
+                        this.valFmt = "yyyy-MM";
+                        break;
+                    default:
+                        this.valFmt = "yyyy-MM-dd";
+                        break;
+                }
             }
         },
         name:"mj-date-picker"
     }
 </script>
+<style scoped>
+    .mj-data-picker{
+        position: relative;
+        display: inline-block;
+        font-size: 12px;
+        min-width: 120px;
+        width: 166px;
+    }
+    .mj-data-picker .mj-data-input{
+        position: relative;
+        width: 100%;
+        padding: 6px 10px;
+        height: 34px;
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        border-radius: 1px;
+        color:#26282c;
+        border:1px solid #e7e9f3;
+        background-color: #fff;
+        outline: none;
+    }
+    .mj-data-picker .mj-data-icon{
+        right: 5px;
+        top: 10px;
+        position: absolute;
+        display: block;
+        width: 13px;
+        height: 15px;
+        background-color: #bfcbd9;
+    }
+    .mj-data-picker .mj-data-icon:before{
+        position: absolute;
+        content: "";
+        display: block;
+        width: 5px;
+        height: 2px;
+        border-color:#bfcbd9;
+        border-style: solid;
+        border-top-width: 0px;
+        border-left-width: 2px;
+        border-bottom-width: 0px;
+        border-right-width: 2px;
+        background-color: transparent;
+        top: -2px;
+        left: 2px;
+    }
+    .mj-data-picker .mj-data-icon:after{
+        position: absolute;
+        content: "";
+        display: block;
+        width: 5px;
+        height: 5px;
+        border-color:#fff;
+        border-style: solid;
+        border-top-width: 3px;
+        border-left-width: 6px;
+        border-bottom-width: 1px;
+        border-right-width: 0;
+        background-color: #bfcbd9;
+        top: 3px;
+        left: 1px;
+    }
+    .mj-data-picker .mj-data-icon:hover{
+        right: 5px;
+        top: 10px;
+        position: absolute;
+        display: block;
+        width: 14px;
+        height: 14px;
+        cursor: pointer;
+        background-color: transparent;
+    }
+    .mj-data-picker .mj-data-icon:hover:before{
+        content: "";
+        display: block;
+        position: absolute;
+        left: 0;
+        top: 50%;
+        margin-left: -3px;
+        width: 140%;
+        height: 1px;
+        background-color: #a2a8b4;
+        transform: rotate(45deg);
+        border:0;
+    }
+    .mj-data-picker .mj-data-icon:hover:after{
+        content: "";
+        display: block;
+        position: absolute;
+        left: 0;
+        top: 50%;
+        margin-left: -3px;
+        width: 140%;
+        height: 1px;
+        background-color: #a2a8b4;
+        transform: rotate(-45deg);
+        border:0;
+    }
+    .mj-form-item.mj-form-error .mj-data-input{
+        border-color: #ff4949;
+    }
+    .mj-data-picker .mj-data-times{
+        padding: 8px 12px 5px;
+        border-bottom:1px solid #e7e9f3;
+    }
+    .mj-data-picker .mj-data-times>input{
+        float: left;
+        display: inline-block;
+        padding: 6px 10px;
+        width: 106px;
+        height: 32px;
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        border-radius: 1px;
+        color:#26282c;
+        border:1px solid #e7e9f3;
+        background-color: #fff;
+        outline: none;
+    }
+    .mj-data-picker .mj-data-times>input:first-child{
+        margin-right: 12px;
+    }
+    .mj-data-picker .mj-data-times .mj-data-times-main{
+        position: absolute;
+        left: 124px;
+        width: 122px;
+        top: 45px;
+        background-color: #fff;
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        border:1px solid #e7e9f3;
+        z-index: 999999;
+    }
+    .mj-data-picker .mj-data-times .mj-data-times-main .mj-data-times-list{
+        width: 100%;
+        height: 160px;
+        border-bottom: 1px solid #e7e9f3;
+    }
+    .mj-data-picker .mj-data-times .mj-data-times-main .mj-data-times-list>div{
+        float: left;
+        width: 40px;
+        height: 100%;
+        display: inline-block;
+        overflow: hidden;
+    }
+    .mj-data-picker .mj-data-times .mj-data-times-main .mj-data-times-list>div>div{
+        width: 60px;
+        height: 100%;
+        display: inline-block;
+        overflow: auto;
+    }
+    .mj-data-picker .mj-data-times .mj-data-times-main .mj-data-times-list ul{
+        width: 40px;
+    }
+    .mj-data-picker .mj-data-times .mj-data-times-main .mj-data-times-list ul li{
+        width: 40px;
+        height: 32px;
+        text-align: center;
+        line-height: 32px;
+        cursor: pointer;
+    }
+    .mj-data-picker .mj-data-times .mj-data-times-main .mj-data-times-list ul li.mj-currtime{
+        background-color: #2283ef;
+        color: #fff;
+    }
+    .mj-data-picker .mj-data-times .mj-data-times-btns{
+        height: 36px;
+        text-align: right;
+    }
+    .mj-data-picker .mj-data-times .mj-data-times-btns>div{
+        display: inline-block;
+        line-height: 36px;
+        margin: 0 10px;
+        color: #2283ef;
+        font-size: 12px;
+        cursor: pointer;
+    }
+    .mj-data-picker .mj-data-main{
+        position: absolute;
+        left: 0;
+        background-color: #fff;
+        border:1px solid #e7e9f3;
+        z-index: 999999999;
+    }
+    .mj-data-picker .mj-data-main-bottom{
+        top: 44px;
+    }
+    .mj-data-picker .mj-data-main-top{
+        bottom: 44px;
+    }
+    .mj-data-picker .mj-data-main .mj-data-years{
+        position: relative;
+        padding: 16px 12px;
+        line-height: normal;
+    }
+    .mj-data-picker .mj-data-main .mj-data-years .mj-data-years-btn{
+        float: left;
+        display: inline-block;
+        width: 12px;
+        padding: 0 6px;
+        cursor: pointer;
+    }
+    .mj-data-picker .mj-data-main .mj-data-years .mj-data-prev{
+        position: relative;
+        display: inline-block;
+        border-width: 6px;
+        border-style: solid;
+        border-color:transparent;
+        border-right-color: #97a8be;
+        border-left-width:0; 
+    }
+    .mj-data-picker .mj-data-main .mj-data-years .mj-data-prev:after{
+        content: "";
+        position: absolute;
+        top: -4px;
+        left: 2px;
+        display: block;
+        border-width: 4px;
+        border-style: solid;
+        border-color:transparent;
+        border-right-color: #fff;
+        border-left-width:0; 
+    }
+    .mj-data-picker .mj-data-main .mj-data-years .mj-data-next{
+        position: relative;
+        display: inline-block;
+        border-width: 6px;
+        border-style: solid;
+        border-color:transparent;
+        border-left-color: #97a8be;
+        border-right-width:0; 
+    }
+    .mj-data-picker .mj-data-main .mj-data-years .mj-data-next:after{
+        content: "";
+        position: absolute;
+        top: -4px;
+        left: -6px;
+        display: block;
+        border-width: 4px;
+        border-style: solid;
+        border-color:transparent;
+        border-left-color: #fff;
+        border-right-width:0; 
+    }
+    .mj-data-picker .mj-data-main .mj-data-years .mj-data-years-text{
+        float: left;
+        display: inline-block;
+        width: 128px;
+        text-align: center;
+        line-height: 12px;
+    }
+    .mj-data-picker .mj-data-main .mj-data-years .mj-data-years-text span{
+        margin: 0 3px;
+        cursor: pointer;
+    }
+    .mj-data-picker .mj-data-main .mj-data-years .mj-data-years-text span:hover{
+        color:#20a0ff;
+    }
+    .mj-data-picker .mj-data-main .mj-data-yearList{
+        padding: 0 12px 12px;
+        width: 224px;
+        height: 224px;
+        background-color: #fff;
+    }
+    .mj-data-picker .mj-data-main .mj-data-yearList dl{
+        display: inline-block;
+        margin: 32px 3px 0;
+        width: 48px;
+        height: 32px;
+        text-align: center;
+        line-height: 32px;
+        cursor: pointer;
+    }
+    .mj-data-picker .mj-data-main .mj-data-yearList dl.currYear{
+        background-color: #2283ef;
+        color: #fff;
+    }
+    .mj-data-picker .mj-data-main .mj-data-yearList dl.disabledYear{
+        background-color: #efefef;
+        color: #ddd;
+        cursor: default;
+    }
+    .mj-data-picker .mj-data-main .mj-data-list{
+        padding: 0 12px 12px;
+        width: 224px;
+        height: 224px;
+    }
+    .mj-data-picker .mj-data-main .mj-data-list dl{
+        float: left;
+        padding: 8px;
+        width: 16px;
+        display: inline-block;
+        height: 16px;
+        line-height: 16px;
+        text-align: center;
+        background-color: #fff;
+        color: #48576a;
+    }
+    .mj-data-picker .mj-data-main .mj-data-list dl.mj-data-day{
+        cursor: pointer;
+    }
+    .mj-data-picker .mj-data-main .mj-data-list dl.mj-data-disabled{
+        cursor: default;
+        background-color: #efefef;
+        color:#ddd;
+    }
+    .mj-data-picker .mj-data-main .mj-data-list dl.mj-data-current{
+        background-color: #2283ef;
+        color: #fff;
+    }
+    .mj-data-picker .mj-data-button{
+        height: 36px;
+        text-align: right;
+        border-top:1px solid #e7e9f3;
+    }
+    .mj-data-picker .mj-data-button .mj-data-button-yes{
+        display: inline-block;
+        line-height: 24px;
+        width: 50px;
+        margin: 5px 10px;
+        background-color: #2283ef;
+        color:#fff;
+        text-align: center;
+        font-size: 12px;
+        cursor: pointer;
+    }
+    .mj-data-picker .mj-data-button .mj-data-button-cancle{
+        display: inline-block;
+        line-height: 24px;
+        width: 50px;
+        margin: 5px 10px;
+        border:1px solid #e7e9f3;
+        border-radius: 1px;
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        background-color: #fff;
+        color:#1f272e;
+        text-align: center;
+        font-size: 12px;
+        cursor: pointer;
+    }
+</style>

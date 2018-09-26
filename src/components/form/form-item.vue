@@ -127,15 +127,15 @@
         },
         created:function(){
             var parent = this.$parent;
-            while(parent){
-                if(parent.$vnode && parent.$vnode.tag && /^vue-component-\d*-mj-form$/.test(parent.$vnode.tag)){
+            while (parent) {
+                if (parent.$vnode && parent.$vnode.tag && /^vue-component-\d*-mj-form$/.test(parent.$vnode.tag)) {
                     this.parent = parent;
                     break;
-                }else{
+                } else {
                     parent = parent.$parent;
                 }
             }
-            if(this.parent){
+            if (this.parent) {
                 this.parent.formItemList.push(this);
             }
         },

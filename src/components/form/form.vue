@@ -22,7 +22,7 @@
             model:Object,
             rules:{
                 type:Object,
-                default:function(){return {}}
+                default: function () {return {}}
             },
             align:{
                 type:String,

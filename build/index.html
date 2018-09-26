@@ -5,167 +5,202 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title></title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="index.css">
 </head>
 <body>
     <div id="app">
-        <mj-row>
-            <mj-col :span="6" align="center">
-                <mj-button>啊啊啊</mj-button>
-            </mj-col>
-            <mj-col :span="6" align="center">
-                <mj-input placeholder="asdad" v-model="iptVal"></mj-input>
-            </mj-col>
-            <mj-col :span="6" align="center">
-                <mj-textarea placeholder="asdad" v-model="textarea"></mj-textarea>
-            </mj-col>
-            <mj-col :span="6" align="center">
-                <mj-select v-model="select">
-                    <mj-select-item value="ada" label="dad" data-pp="adad"></mj-select-item>
-                    <mj-select-item value="adafasfa" label="afasf" data-pp="adafasfaad" :filter-flag="true"></mj-select-item>
+        <div class="app-left">
+            <ul>
+                <li v-for="(item, i) in componentList" :key="i" @click="componentNameClick(item)">
+                    <a :href="'#' + item" :class="{'active': currName === item}">{{item}}</a>
+                </li>
+            </ul>
+        </div>
+        <div  class="app-right">
+            <div v-show="currName === 'button'">
+                <mj-button>按钮</mj-button><mj-button size="small">小按钮</mj-button><mj-button size="mini">超小按钮</mj-button><br/>
+                <mj-button round>按钮</mj-button><mj-button size="small" round>小按钮</mj-button><mj-button size="mini" round>超小按钮</mj-button><br/>
+                <mj-button>按钮</mj-button><mj-button type="primary">按钮</mj-button><mj-button type="danger">按钮</mj-button><mj-button type="text">按钮</mj-button><br/>
+                <mj-button disabled>按钮</mj-button><mj-button type="primary" disabled>按钮</mj-button><mj-button type="danger" disabled>按钮</mj-button><mj-button type="text" disabled>按钮</mj-button>
+                <mj-button-group>
+                    <mj-button type="primary">按钮</mj-button><mj-button type="primary">按钮</mj-button><mj-button type="primary">按钮</mj-button><mj-button type="primary">按钮</mj-button>
+                </mj-button-group>
+            </div>
+            <div v-show="currName === 'date-picker'">
+                <mj-date-picker v-model="dateValue1"></mj-date-picker>
+                <mj-date-picker v-model="dateValue2" type="datetime"></mj-date-picker>
+                <mj-date-picker v-model="dateValue3" type="year"></mj-date-picker>
+                <mj-date-picker v-model="dateValue4" type="month"></mj-date-picker>
+            </div>
+            <div v-show="currName === 'dialog'">
+                <mj-button @click="dialogVisible1 = true">按钮</mj-button>
+                <mj-button @click="dialogVisible2 = true">按钮</mj-button>
+                <mj-button @click="dialogVisible3 = true">按钮</mj-button>
+                <mj-button @click="dialogVisible4 = true">按钮</mj-button>
+                <mj-button @click="dialogVisible5 = true">按钮</mj-button>
+                <mj-dialog :visible.sync="dialogVisible1">
+                    默认
+                </mj-dialog>
+                <mj-dialog :visible.sync="dialogVisible2" size="full" src="https://mj921.github.io/brush-equip/dist/index.html"></mj-dialog>
+                <mj-dialog :visible.sync="dialogVisible3" title="自定义标题">
+                    自定义标题
+                </mj-dialog>
+                <mj-dialog :visible.sync="dialogVisible4" size="large" title="自定义标题">
+                    size = large
+                </mj-dialog>
+                <mj-dialog :visible.sync="dialogVisible5" size="small" title="自定义标题">
+                    size = small
+                </mj-dialog>
+            </div>
+            <div v-show="currName === 'loading'">
+                <mj-loading :visible="true"></mj-loading>
+            </div>
+            <div v-show="currName === 'radio'">
+                <mj-radio v-model="radioValue1">
+                    <mj-radio-item
+                        v-for="item in options"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value">
+                    </mj-radio-item>
+                </mj-radio>
+            </div>
+            <div v-show="currName === 'select'">
+                <mj-select v-model="selectValue1" placeholder="请选择" @change="c">
+                    <mj-option
+                        v-for="item in options"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value">
+                    </mj-option>
                 </mj-select>
-            </mj-col>
-        </mj-row>
-        <mj-table :data="tableData" :load-num="0" ref="tttt">
-            <mj-table-column :checkbox="true" :filter-checkbox="function(){return true;}"></mj-table-column>
-            <mj-table-column prop="a" label="啊啊"></mj-table-column>
-            <mj-table-column prop="b" label="不不不" :formatter="function(row,val){return '99999'}"></mj-table-column>
-            <mj-table-column prop="a" label="啊啊"></mj-table-column>
-            <mj-table-column prop="b" label="不不不" :formatter="function(row,val){return '99999'}"></mj-table-column>
-            <mj-table-column prop="a" label="啊啊"></mj-table-column>
-            <mj-table-column prop="b" label="不不不" :formatter="function(row,val){return '99999'}"></mj-table-column>
-            <mj-table-column prop="a" label="啊啊"></mj-table-column>
-            <mj-table-column prop="b" label="不不不" :formatter="function(row,val){return '99999'}"></mj-table-column>
-            <mj-table-column prop="a" label="啊啊"></mj-table-column>
-            <mj-table-column prop="b" label="不不不" :formatter="function(row,val){return '99999'}"></mj-table-column>
-            <mj-table-column prop="a" label="啊啊"></mj-table-column>
-            <mj-table-column prop="b" label="不不不" :formatter="function(row,val){return '99999'}"></mj-table-column>
-            <mj-table-column prop="a" label="啊啊"></mj-table-column>
-            <mj-table-column prop="b" label="不不不" :formatter="function(row,val){return '99999'}"></mj-table-column>
-            <mj-table-column prop="a" label="啊啊"></mj-table-column>
-            <mj-table-column prop="b" label="不不不" :formatter="function(row,val){return '99999'}"></mj-table-column>
-            <mj-table-column prop="a" label="啊啊"></mj-table-column>
-            <mj-table-column prop="b" label="不不不" :formatter="function(row,val){return '99999'}"></mj-table-column>
-            <mj-table-column prop="a" label="啊啊"></mj-table-column>
-            <mj-table-column prop="b" label="不不不" :formatter="function(row,val){return '99999'}"></mj-table-column>
-            <mj-table-column prop="a" label="啊啊"></mj-table-column>
-            <mj-table-column prop="b" label="不不不" :formatter="function(row,val){return '99999'}"></mj-table-column>
-            <mj-table-column prop="a" label="啊啊"></mj-table-column>
-            <mj-table-column prop="b" label="不不不" :formatter="function(row,val){return '99999'}"></mj-table-column>
-            <mj-table-column prop="b" label="不不不" :formatter="function(row,val){return '99999'}"></mj-table-column>
-            <mj-table-column prop="a" label="啊啊"></mj-table-column>
-            <mj-table-column prop="b" label="不不不" :formatter="function(row,val){return '99999'}"></mj-table-column>
-            <mj-table-column prop="a" label="啊啊"></mj-table-column>
-            <mj-table-column prop="b" label="不不不" :formatter="function(row,val){return '99999'}"></mj-table-column>
-            <mj-table-column prop="a" label="啊啊"></mj-table-column>
-            <mj-table-column prop="b" label="不不不" :formatter="function(row,val){return '99999'}"></mj-table-column>
-            <mj-table-column prop="a" label="啊啊"></mj-table-column>
-            <mj-table-column prop="b" label="不不不" :formatter="function(row,val){return '99999'}"></mj-table-column>
-            <mj-table-column prop="b" label="不不不" :formatter="function(row,val){return '99999'}"></mj-table-column>
-            <mj-table-column prop="a" label="啊啊"></mj-table-column>
-            <mj-table-column prop="b" label="不不不" :formatter="function(row,val){return '99999'}"></mj-table-column>
-            <mj-table-column prop="a" label="啊啊"></mj-table-column>
-            <mj-table-column prop="b" label="不不不" :formatter="function(row,val){return '99999'}"></mj-table-column>
-            <mj-table-column prop="a" label="啊啊"></mj-table-column>
-            <mj-table-column prop="b" label="不不不" :formatter="function(row,val){return '99999'}"></mj-table-column>
-            <mj-table-column prop="a" label="啊啊"></mj-table-column>
-            <mj-table-column prop="b" label="不不不" :formatter="function(row,val){return '99999'}"></mj-table-column>
-            <mj-table-column prop="a" label="啊啊"></mj-table-column>
-            <mj-table-column prop="b" label="不不不" :formatter="function(row,val){return '99999'}"></mj-table-column>
-            <mj-table-column prop="c" label="啊啊" fixed="right"></mj-table-column>
-        </mj-table>
-        <mj-page :page-curr="2" :pages="10"></mj-page>
-        <mj-checkbox-group ref="aaa">
-            <mj-checkbox v-model="checkbox" label="阿发" checked-value="aaa" @change="checkboxChange"></mj-checkbox>
-            <div class="mj-checkbox">afafaf</div>
-        </mj-checkbox-group>
-        <mj-checkbox v-model="checkbox" label="阿发"></mj-checkbox>
-        <mj-button @click="ccccccc">click</mj-button>
-        <mj-form>
-            <mj-row>
-                <mj-col>
-                    <div>
-                        <mj-form-item label="aaa" required></mj-form-item>
-                    </div>
-                </mj-col>
-            </mj-row>
-        </mj-form>
-        {{iptVal}}
-        <mj-dialog v-model="dialog" src="#">afaafagag
-            <div slot="footer">底部</div></mj-dialog>
-        <mj-button @click="dialog = true">显示dialog</mj-button>
-        <mj-radio v-model="radio">
-            <mj-radio-item label="1" value="1"></mj-radio-item>
-            <mj-radio-item label="2" value="2"></mj-radio-item>
-        </mj-radio>
-        <mj-tab>
-            <mj-tab-panel title="1">afafasfa
-            afadafa
-            asfasf
-            afasf
-            fasfa<br/>
-            fas
-            fasf</mj-tab-panel>
-            <mj-tab-panel title="2">啊发发</mj-tab-panel>
-            <mj-tab-panel title="3">啊发发</mj-tab-panel>
-            <mj-tab-panel title="4">啊发发</mj-tab-panel>
-            <mj-tab-panel title="5">啊发发</mj-tab-panel>
-            <mj-tab-panel title="6">啊发发</mj-tab-panel>
-            <mj-tab-panel title="7">啊发发</mj-tab-panel>
-            <mj-tab-panel title="8">啊发发</mj-tab-panel>
-            
-        </mj-tab>
-        <mj-date-picker v-model="datepicker" type="time"></mj-date-picker>
-        <!-- <mj-tree :data="list">
-            <mj-tree-column prop="a" label="啊啊"></mj-tree-column>
-        </mj-tree> -->
+                <mj-select v-model="selectValue2" placeholder="请选择">
+                    <mj-option
+                        v-for="item in options"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value"
+                        :disabled="item.disabled">
+                    </mj-option>
+                </mj-select>
+                <mj-select v-model="selectValue2" placeholder="请选择" disabled>
+                    <mj-option
+                        v-for="item in options"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value"
+                        :disabled="item.disabled">
+                    </mj-option>
+                </mj-select>
+                <mj-select v-model="selectValue3" placeholder="请选择" clearable>
+                    <mj-option
+                        v-for="item in options"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value"
+                        :disabled="item.disabled">
+                    </mj-option>
+                </mj-select>
+                <mj-select v-model="selectValue4" placeholder="请选择" clearable>
+                    <mj-option
+                        v-for="item in options"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value"
+                        :disabled="item.disabled">
+                        <span style="float: left">{{ item.label }}</span>
+                        <span style="float: right; color: #8492a6; font-size: 13px">{{ item.value }}</span>
+                    </mj-option>
+                </mj-select>
+                <mj-select v-model="selectValue5" placeholder="请选择" filterable>
+                    <mj-option
+                        v-for="item in options"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value">
+                    </mj-option>
+                </mj-select>
+                <mj-select v-model="selectValue6" placeholder="请选择" filterable allow-create>
+                    <mj-option
+                        v-for="item in options"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value">
+                    </mj-option>
+                </mj-select>
+            </div>
+            <div v-show="currName === 'tabs'">
+                <mj-tabs>
+                    <mj-tab-panel title="标题">adasd</mj-tab-panel>
+                    <mj-tab-panel title="标题1">adadadasda</mj-tab-panel>
+                </mj-tabs>
+            </div>
+        </div>
     </div>
     <script src="vue.js"></script>
     <script src="mj-ui.js"></script>
     <script>
+        let componentList = Object.values(MJUI).map(function (item) {
+            return item.name.replace("mj-", "");
+        });
         var app = new Vue({
             el:"#app",
-            data:{
-                iptVal:"",
-                textarea:"asdadasd",
-                select:"ada",
-                tableData:[
-                    {
-                        a:1,
-                        b:"bbb",
-                        c:"ccc"
-                    },{
-                        a:2,
-                        b:"bbb",
-                        c:"ccc"
-                    },{
-                        a:3,
-                        b:"bbb",
-                        c:"ccc"
-                    }
-                ],
-                checkbox:true,
-                dialog:false,
-                radio:"1",
-                datepicker:"",
-                list:[
-                    {
-                        a:"a1",
-                        children:[
-                            {
-                                a:"a11"
-                            }
-                        ]
-                    }
-                ]
-            },
-            methods:{
-                checkboxChange:function(){
-                    // console.log(this.$refs.aaa.checkedList,this.$refs.aaa)
-                },
-                ccccccc:function(){
-                    // console.log(this.$refs.tttt);
-                    this.$confirm({type:"info",message:"afasfasf"});
+            data: function () {
+                return {
+                    componentList: componentList,
+                    currName: "button",
+                    options: [{
+                        value: '选项1',
+                        label: '黄金糕'
+                    }, {
+                        value: '选项2',
+                        label: '双皮奶',
+                        disabled: true
+                    }, {
+                        value: '选项3',
+                        label: '蚵仔煎'
+                    }, {
+                        value: '选项4',
+                        label: '龙须面'
+                    }, {
+                        value: '选项5',
+                        label: '北京烤鸭'
+                    }],
+                    selectValue1: "",
+                    selectValue2: "",
+                    selectValue3: "",
+                    selectValue4: "",
+                    selectValue5: "",
+                    selectValue6: "",
+                    selectValue7: "",
+                    dialogVisible1: false,
+                    dialogVisible2: false,
+                    dialogVisible3: false,
+                    dialogVisible4: false,
+                    dialogVisible5: false,
+                    dialogVisible6: false,
+                    dialogVisible7: false,
+                    dialogVisible8: false,
+                    radioValue1: "",
+                    dateValue1: "",
+                    dateValue2: "",
+                    dateValue3: "",
+                    dateValue4: "",
+                    dateValue5: "",
+                    dateValue6: "",
+                    dateValue7: ""
                 }
+            },
+            methods: {
+                componentNameClick: function (name) {
+                    this.currName = name;
+                },
+                c: function (v) {
+                    console.log(v)
+                }
+            },
+            created: function () {
+                this.currName = location.hash.replace("#", "");
             }
         });
     </script>

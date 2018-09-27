@@ -31,6 +31,7 @@
                 <mj-date-picker v-model="dateValue2" type="datetime"></mj-date-picker>
                 <mj-date-picker v-model="dateValue3" type="year"></mj-date-picker>
                 <mj-date-picker v-model="dateValue4" type="month"></mj-date-picker>
+                <mj-date-picker v-model="dateValue5" max="2022-10-02" min="2001-09-02"></mj-date-picker>
             </div>
             <div v-show="currName === 'dialog'">
                 <mj-button @click="dialogVisible1 = true">按钮</mj-button>
